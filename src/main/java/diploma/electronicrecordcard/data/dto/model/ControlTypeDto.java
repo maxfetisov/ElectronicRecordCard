@@ -1,4 +1,4 @@
-package diploma.electronicrecordcard.data.dto;
+package diploma.electronicrecordcard.data.dto.model;
 
 import lombok.Builder;
 

@@ -72,10 +72,10 @@ public class User {
     Institute institute;
 
     @OneToMany(mappedBy = "teacher")
-    List<StudentMark> teacherStudentMarks;
+    List<UserSubjectControlType> teacherUserSubjectControlTypes;
 
     @OneToMany(mappedBy = "student")
-    List<StudentMark> studentStudentMarks;
+    List<UserSubjectControlType> studentUserSubjectControlTypes;
 
     @ManyToMany
     @JoinTable(name = "user_role")

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="130420242328" author="fetisov">
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="2"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="3"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="2"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="3"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="5"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="2"/>
+            <column name="control_type_id" value="5"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="3"/>
+            <column name="control_type_id" value="5"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="6"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="6"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="6"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="6"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="6"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="7"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="7"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="7"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="7"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="7"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
+            <column name="control_type_id" value="8"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="8"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="8"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="8"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="8"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

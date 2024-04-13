@@ -1,6 +1,6 @@
 package diploma.electronicrecordcard.service.mapper.impl;
 
-import diploma.electronicrecordcard.data.dto.MarkDto;
+import diploma.electronicrecordcard.data.dto.model.MarkDto;
 import diploma.electronicrecordcard.data.entity.Mark;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import org.springframework.stereotype.Component;

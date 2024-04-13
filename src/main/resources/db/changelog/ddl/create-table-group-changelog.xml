@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="310320240058" author="fetisov">
-        <createTable tableName="group">
+        <createTable tableName="student_group">
             <column name="id" type="int">
                 <constraints primaryKey="true"/>
             </column>

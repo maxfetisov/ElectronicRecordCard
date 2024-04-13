@@ -35,34 +35,16 @@ public class StudentMark {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "semester")
-    Short semester;
-
     @Column(name = "completion_date")
     @Temporal(TemporalType.DATE)
     LocalDate completionDate;
 
-    @Column(name = "hours_number")
-    Short hoursNumber;
-
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    User teacher;
-
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    User student;
-
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    Subject subject;
-
-    @ManyToOne
-    @JoinColumn(name = "control_type_id")
-    ControlType controlType;
-
     @ManyToOne
     @JoinColumn(name = "mark_id")
     Mark mark;
+
+    @ManyToOne
+    @JoinColumn(name = "user_subject_control_type_id")
+    UserSubjectControlType userSubjectControlType;
 
 }

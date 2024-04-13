@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="130420242325" author="fetisov">
+        <createTable tableName="mark_control_type">
+            <column name="mark_id" type="smallint">
+                <constraints
+                        primaryKey="true"
+                        primaryKeyName="pk_mark_control_type"
+                        foreignKeyName="fk_mark_control_type_mark"
+                        references="mark(id)"
+                />
+            </column>
+            <column name="control_type_id" type="smallint">
+                <constraints
+                        primaryKey="true"
+                        primaryKeyName="pk_mark_control_type"
+                        foreignKeyName="fk_mark_control_type_control_type"
+                        references="control_type(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,6 +1,6 @@
 package diploma.electronicrecordcard.service.mapper.impl;
 
-import diploma.electronicrecordcard.data.dto.UserDto;
+import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.entity.Group;
 import diploma.electronicrecordcard.data.entity.Institute;
 import diploma.electronicrecordcard.data.entity.User;

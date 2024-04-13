@@ -12,9 +12,12 @@
     <include file="ddl/create-table-group-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-table-user-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-table-user-role-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-user-subject-control-type-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-table-student-mark-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-mark-control-type-changelog.xml" relativeToChangelogFile="true"/>
 
     <include file="dml/control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/role-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/mark-values-insert-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dml/mark-control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

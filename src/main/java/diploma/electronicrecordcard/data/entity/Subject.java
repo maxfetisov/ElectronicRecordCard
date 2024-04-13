@@ -36,6 +36,6 @@ public class Subject {
     String name;
 
     @OneToMany(mappedBy = "subject")
-    List<StudentMark> studentMarks;
+    List<UserSubjectControlType> userSubjectControlTypes;
 
 }

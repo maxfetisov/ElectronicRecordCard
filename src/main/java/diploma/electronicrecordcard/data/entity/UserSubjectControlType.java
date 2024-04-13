@@ -6,8 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -21,38 +20,43 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 @Entity
-@Table(name = "mark")
+@Table(name = "user_subject_control_type")
 @Getter
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mark {
+public class UserSubjectControlType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Short id;
+    Long id;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "semester")
+    Short semester;
 
-    @Column(name = "title")
-    String title;
+    @Column(name = "hours_number")
+    Short hoursNumber;
 
-    @Column(name = "value")
-    Short value;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    User teacher;
 
-    @OneToMany(mappedBy = "mark")
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    User student;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "control_type_id")
+    ControlType controlType;
+
+    @OneToMany(mappedBy = "userSubjectControlType")
     List<StudentMark> studentMarks;
-
-    @ManyToMany
-    @JoinTable(
-            name = "mark_control_type",
-            joinColumns = @JoinColumn(name = "mark_id"),
-            inverseJoinColumns =  @JoinColumn( name = "control_type_id")
-    )
-    List<ControlType> controlTypes;
 
 }

@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "group")
+@Table(name = "student_group")
 @Getter
 @Setter
 @Builder

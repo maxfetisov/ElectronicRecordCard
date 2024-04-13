@@ -16,41 +16,16 @@
                         nullable="false"
                 />
             </column>
-            <column name="teacher_id" type="bigint">
+            <column name="user_subject_control_type_id" type="bigint">
                 <constraints
-                        foreignKeyName="fk_student_mark_teacher"
-                        references="user(id)"
+                        foreignKeyName="fk_student_mark_user_subject_control_type"
+                        references="user_subject_control_type(id)"
                         nullable="false"
                 />
-            </column>
-            <column name="student_id" type="bigint">
-                <constraints
-                        foreignKeyName="fk_student_mark_student"
-                        references="user(id)"
-                        nullable="false"
-                />
-            </column>
-            <column name="subject_id" type="bigint">
-                <constraints
-                        foreignKeyName="fk_student_mark_subject"
-                        references="subject(id)"
-                        nullable="false"
-                />
-            </column>
-            <column name="control_type_id" type="smallint">
-                <constraints
-                        foreignKeyName="fk_student_mark_control_type"
-                        references="control_type(id)"
-                        nullable="false"
-                />
-            </column>
-            <column name="semester" type="smallint">
-                <constraints nullable="false"/>
             </column>
             <column name="completion_date" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="hours_number" type="smallint"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

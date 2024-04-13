@@ -25,7 +25,7 @@
             <column name="phone_number" type="varchar(20)"/>
             <column name="email" type="varchar(100)"/>
             <column name="group_id" type="int">
-                <constraints foreignKeyName="fk_user_group" references="group(id)"/>
+                <constraints foreignKeyName="fk_user_group" references="student_group(id)"/>
             </column>
             <column name="institute_id" type="smallint">
                 <constraints foreignKeyName="fk_user_institute" references="institute(id)"/>
