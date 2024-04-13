@@ -30,15 +30,15 @@ public class StudentMarkMapper implements Mapper<StudentMarkDto, StudentMark> {
     @Override
     public StudentMark toEntity(StudentMarkDto studentMarkDto) {
         return StudentMark.builder()
-                .id(studentMarkDto.getId())
-                .semester(studentMarkDto.getSemester())
-                .completionDate(studentMarkDto.getCompletionDate())
-                .hoursNumber(studentMarkDto.getHoursNumber())
-                .teacher(User.builder().id(studentMarkDto.getTeacherId()).build())
-                .student(User.builder().id(studentMarkDto.getStudentId()).build())
-                .controlType(ControlType.builder().id(studentMarkDto.getControlTypeId()).build())
-                .mark(Mark.builder().id(studentMarkDto.getMarkId()).build())
-                .subject(Subject.builder().id(studentMarkDto.getSubjectId()).build())
+                .id(studentMarkDto.id())
+                .semester(studentMarkDto.semester())
+                .completionDate(studentMarkDto.completionDate())
+                .hoursNumber(studentMarkDto.hoursNumber())
+                .teacher(User.builder().id(studentMarkDto.teacherId()).build())
+                .student(User.builder().id(studentMarkDto.studentId()).build())
+                .controlType(ControlType.builder().id(studentMarkDto.controlTypeId()).build())
+                .mark(Mark.builder().id(studentMarkDto.markId()).build())
+                .subject(Subject.builder().id(studentMarkDto.subjectId()).build())
                 .build();
     }
 

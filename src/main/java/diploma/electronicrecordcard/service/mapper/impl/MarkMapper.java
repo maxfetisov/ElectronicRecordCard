@@ -21,10 +21,10 @@ public class MarkMapper implements Mapper<MarkDto, Mark> {
     @Override
     public Mark toEntity(MarkDto markDto) {
         return Mark.builder()
-                .id(markDto.getId())
-                .name(markDto.getName())
-                .title(markDto.getTitle())
-                .value(markDto.getValue())
+                .id(markDto.id())
+                .name(markDto.name())
+                .title(markDto.title())
+                .value(markDto.value())
                 .build();
     }
 

@@ -24,12 +24,12 @@ public class GroupMapper implements Mapper<GroupDto, Group> {
     @Override
     public Group toEntity(GroupDto groupDto) {
         return Group.builder()
-                .id(groupDto.getId())
-                .name(groupDto.getName())
-                .admissionDate(groupDto.getAdmissionDate())
-                .deleted(groupDto.getDeleted())
-                .fullName(groupDto.getFullName())
-                .institute(Institute.builder().id(groupDto.getInstituteId()).build())
+                .id(groupDto.id())
+                .name(groupDto.name())
+                .admissionDate(groupDto.admissionDate())
+                .deleted(groupDto.deleted())
+                .fullName(groupDto.fullName())
+                .institute(Institute.builder().id(groupDto.instituteId()).build())
                 .build();
     }
 

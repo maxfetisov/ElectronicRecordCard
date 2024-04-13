@@ -19,8 +19,8 @@ public class RoleMapper implements Mapper<RoleDto, Role> {
     @Override
     public Role toEntity(RoleDto roleDto) {
         return Role.builder()
-                .id(roleDto.getId())
-                .name(roleDto.getName())
+                .id(roleDto.id())
+                .name(roleDto.name())
                 .build();
     }
 

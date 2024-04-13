@@ -20,9 +20,9 @@ public class InstituteMapper implements Mapper<InstituteDto, Institute> {
     @Override
     public Institute toEntity(InstituteDto instituteDto) {
         return Institute.builder()
-                .id(instituteDto.getId())
-                .name(instituteDto.getName())
-                .fullName(instituteDto.getFullName())
+                .id(instituteDto.id())
+                .name(instituteDto.name())
+                .fullName(instituteDto.fullName())
                 .build();
     }
 

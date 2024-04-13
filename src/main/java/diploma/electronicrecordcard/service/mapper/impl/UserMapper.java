@@ -30,17 +30,17 @@ public class UserMapper implements Mapper<UserDto, User> {
     @Override
     public User toEntity(UserDto userDto) {
         return User.builder()
-                .id(userDto.getId())
-                .login(userDto.getLogin())
-                .email(userDto.getEmail())
-                .lastName(userDto.getLastName())
-                .firstName(userDto.getFirstName())
-                .middleName(userDto.getMiddleName())
-                .deleted(userDto.getDeleted())
-                .phoneNumber(userDto.getPhoneNumber())
-                .recordBookNumber(userDto.getRecordBookNumber())
-                .group(Group.builder().id(userDto.getGroupId()).build())
-                .institute(Institute.builder().id(userDto.getInstituteId()).build())
+                .id(userDto.id())
+                .login(userDto.login())
+                .email(userDto.email())
+                .lastName(userDto.lastName())
+                .firstName(userDto.firstName())
+                .middleName(userDto.middleName())
+                .deleted(userDto.deleted())
+                .phoneNumber(userDto.phoneNumber())
+                .recordBookNumber(userDto.recordBookNumber())
+                .group(Group.builder().id(userDto.groupId()).build())
+                .institute(Institute.builder().id(userDto.instituteId()).build())
                 .build();
     }
 

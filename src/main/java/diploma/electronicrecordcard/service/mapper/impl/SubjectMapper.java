@@ -19,8 +19,8 @@ public class SubjectMapper implements Mapper<SubjectDto, Subject> {
     @Override
     public Subject toEntity(SubjectDto subjectDto) {
         return Subject.builder()
-                .id(subjectDto.getId())
-                .name(subjectDto.getName())
+                .id(subjectDto.id())
+                .name(subjectDto.name())
                 .build();
     }
 

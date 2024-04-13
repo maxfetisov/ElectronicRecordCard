@@ -13,14 +13,16 @@ public class ControlTypeMapper implements Mapper<ControlTypeDto, ControlType> {
         return ControlTypeDto.builder()
                 .id(controlType.getId())
                 .name(controlType.getName())
+                .title(controlType.getTitle())
                 .build();
     }
 
     @Override
     public ControlType toEntity(ControlTypeDto controlTypeDto) {
         return ControlType.builder()
-                .id(controlTypeDto.getId())
-                .name(controlTypeDto.getName())
+                .id(controlTypeDto.id())
+                .name(controlTypeDto.name())
+                .title(controlTypeDto.title())
                 .build();
     }
 
