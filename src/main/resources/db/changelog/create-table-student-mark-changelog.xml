@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="310320240124" author="fetisov">
+        <createTable tableName="student_mark">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="mark_id" type="smallint">
+                <constraints
+                        foreignKeyName="fk_student_mark_mark"
+                        references="mark(id)"
+                        nullable="false"
+                />
+            </column>
+            <column name="teacher_id" type="bigint">
+                <constraints
+                        foreignKeyName="fk_student_mark_teacher"
+                        references="user(id)"
+                        nullable="false"
+                />
+            </column>
+            <column name="student_id" type="bigint">
+                <constraints
+                        foreignKeyName="fk_student_mark_student"
+                        references="user(id)"
+                        nullable="false"
+                />
+            </column>
+            <column name="subject_id" type="bigint">
+                <constraints
+                        foreignKeyName="fk_student_mark_subject"
+                        references="subject(id)"
+                        nullable="false"
+                />
+            </column>
+            <column name="control_type_id" type="smallint">
+                <constraints
+                        foreignKeyName="fk_student_mark_control_type"
+                        references="control_type(id)"
+                        nullable="false"
+                />
+            </column>
+            <column name="semester" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completion_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hours_number" type="smallint"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

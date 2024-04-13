@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="310320240104" author="fetisov">
+        <createTable tableName="user">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(50)"/>
+            <column name="phone_number" type="varchar(20)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="group_id" type="int">
+                <constraints foreignKeyName="fk_user_group" references="group(id)"/>
+            </column>
+            <column name="institute_id" type="smallint">
+                <constraints foreignKeyName="fk_user_institute" references="institute(id)"/>
+            </column>
+            <column name="record_book_number" type="varchar(20)">
+                <constraints unique="true"/>
+            </column>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
