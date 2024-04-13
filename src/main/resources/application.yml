@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ElectronicRecordCard
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost/ElectronicRecordCard
+  liquibase:
+    change-log: classpath:/db/changelog/main-changelog.xml
