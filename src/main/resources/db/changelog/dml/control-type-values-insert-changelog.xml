@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="130420241940" author="fetisov">
+        <insert tableName="control_type">
+            <column name="id" value="1"/>
+            <column name="name" value="CREDIT"/>
+            <column name="title" value="Зачет"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="2"/>
+            <column name="name" value="DIFFERENTIATED_CREDIT"/>
+            <column name="title" value="Дифференцированный зачет"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="3"/>
+            <column name="name" value="EXAM"/>
+            <column name="title" value="Экзамен"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="4"/>
+            <column name="name" value="RECERTIFICATION"/>
+            <column name="title" value="Переаттестация"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="5"/>
+            <column name="name" value="EDUCATIONAL_PRACTICE"/>
+            <column name="title" value="Учебная практика"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="6"/>
+            <column name="name" value="PRODUCTION_PRACTICE"/>
+            <column name="title" value="Производственная практика"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="7"/>
+            <column name="name" value="PRE_GRADUATE_PRACTICE"/>
+            <column name="title" value="Преддипломная практика"/>
+        </insert>
+        <insert tableName="control_type">
+            <column name="id" value="8"/>
+            <column name="name" value="COURSE_PAPER"/>
+            <column name="title" value="Курсовая работа"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

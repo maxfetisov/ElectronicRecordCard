@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="130420241947" author="admin">
+        <insert tableName="mark">
+            <column name="id" value="1"/>
+            <column name="name" value="NON_ADMISSION"/>
+            <column name="title" value="Недопуск"/>
+            <column name="value" value="1"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="2"/>
+            <column name="name" value="FAIL"/>
+            <column name="title" value="Незачет"/>
+            <column name="value" value="2"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="3"/>
+            <column name="name" value="SUCCESS"/>
+            <column name="title" value="Зачет"/>
+            <column name="value" value="5"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="4"/>
+            <column name="name" value="UNSATISFACTORY"/>
+            <column name="title" value="Неудовлетворительно"/>
+            <column name="value" value="2"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="5"/>
+            <column name="name" value="SATISFACTORY"/>
+            <column name="title" value="Удовлетворительно"/>
+            <column name="value" value="3"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="6"/>
+            <column name="name" value="WELL"/>
+            <column name="title" value="Хорошо"/>
+            <column name="value" value="4"/>
+        </insert>
+        <insert tableName="mark">
+            <column name="id" value="7"/>
+            <column name="name" value="GREAT"/>
+            <column name="title" value="Отлично"/>
+            <column name="value" value="5"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

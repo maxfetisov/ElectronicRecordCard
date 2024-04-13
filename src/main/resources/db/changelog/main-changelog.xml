@@ -4,13 +4,17 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="create-table-mark-changelog.xml" relativeToChangelogFile="true" />
-    <include file="create-table-control-type-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-institute-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-role-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-subject-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-group-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-user-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-user-role-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-student-mark-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-mark-changelog.xml" relativeToChangelogFile="true" />
+    <include file="ddl/create-table-control-type-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-institute-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-role-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-subject-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-group-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-user-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-user-role-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table-student-mark-changelog.xml" relativeToChangelogFile="true"/>
+
+    <include file="dml/control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dml/role-values-insert-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dml/mark-values-insert-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

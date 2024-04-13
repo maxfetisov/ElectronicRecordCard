@@ -4,12 +4,18 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="310320240041" author="fetisov">
-        <createTable tableName="control_type">
+    <changeSet id="310320240034" author="fetisov">
+        <createTable tableName="mark">
             <column name="id" type="smallint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(50)">
+            <column name="name" type="varchar(15)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="title" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="smallint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
