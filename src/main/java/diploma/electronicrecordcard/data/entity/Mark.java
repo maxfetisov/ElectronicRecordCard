@@ -35,6 +35,9 @@ public class Mark {
     @Column(name = "name")
     String name;
 
+    @Column(name = "title")
+    String title;
+
     @Column(name = "value")
     Short value;
 

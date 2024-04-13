@@ -36,6 +36,9 @@ public class ControlType {
     @Column(name = "name")
     String name;
 
+    @Column(name = "title")
+    String title;
+
     @OneToMany(mappedBy = "controlType")
     List<StudentMark> studentMarks;
 
