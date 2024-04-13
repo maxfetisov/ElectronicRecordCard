@@ -1,9 +1,6 @@
 package diploma.electronicrecordcard.data.dto.model;
 
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
 
 @Builder
 public record UserDto (
