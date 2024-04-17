@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.rest;
 import diploma.electronicrecordcard.data.dto.model.InstituteDto;
 import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
 import diploma.electronicrecordcard.service.InstituteService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,14 +39,14 @@ public class InstituteController {
     }
 
     @PostMapping
-    public ResponseEntity<InstituteDto> create(@RequestBody InstituteCreateRequestDto request) {
+    public ResponseEntity<InstituteDto> create(@Valid @RequestBody InstituteCreateRequestDto request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(instituteService.create(request));
     }
 
     @PutMapping
-    public ResponseEntity<InstituteDto> update(@RequestBody InstituteDto request) {
+    public ResponseEntity<InstituteDto> update(@Valid @RequestBody InstituteDto request) {
         return ResponseEntity.ok(instituteService.update(request));
     }
 

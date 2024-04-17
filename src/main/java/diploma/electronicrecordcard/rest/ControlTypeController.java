@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.rest;
 import diploma.electronicrecordcard.data.dto.model.ControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.ControlTypeUpdateRequestDto;
 import diploma.electronicrecordcard.service.ControlTypeService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -40,7 +41,7 @@ public class ControlTypeController {
     }
 
     @PutMapping
-    public ResponseEntity<ControlTypeDto> update(@RequestBody ControlTypeUpdateRequestDto request) {
+    public ResponseEntity<ControlTypeDto> update(@Valid @RequestBody ControlTypeUpdateRequestDto request) {
         return ResponseEntity.ok(controlTypeService.update(request));
     }
 

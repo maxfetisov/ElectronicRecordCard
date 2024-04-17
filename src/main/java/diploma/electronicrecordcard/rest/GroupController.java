@@ -4,6 +4,7 @@ import diploma.electronicrecordcard.data.dto.model.GroupDto;
 import diploma.electronicrecordcard.data.dto.request.GroupCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.request.GroupUpdateRequestDto;
 import diploma.electronicrecordcard.service.GroupService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -44,14 +45,14 @@ public class GroupController {
     }
 
     @PostMapping
-    public ResponseEntity<GroupDto> create(@RequestBody GroupCreateRequestDto request) {
+    public ResponseEntity<GroupDto> create(@Valid @RequestBody GroupCreateRequestDto request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(groupService.create(request));
     }
 
     @PutMapping
-    public ResponseEntity<GroupDto> update(@RequestBody GroupUpdateRequestDto request) {
+    public ResponseEntity<GroupDto> update(@Valid @RequestBody GroupUpdateRequestDto request) {
         return ResponseEntity.ok(groupService.update(request));
     }
 

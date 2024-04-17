@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.rest;
 import diploma.electronicrecordcard.data.dto.model.MarkDto;
 import diploma.electronicrecordcard.data.dto.request.MarkUpdateRequestDto;
 import diploma.electronicrecordcard.service.MarkService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,7 +36,7 @@ public class MarkController {
     }
 
     @PutMapping
-    public ResponseEntity<MarkDto> update(@RequestBody MarkUpdateRequestDto request) {
+    public ResponseEntity<MarkDto> update(@Valid @RequestBody MarkUpdateRequestDto request) {
         return ResponseEntity.ok(markService.update(request));
     }
 
