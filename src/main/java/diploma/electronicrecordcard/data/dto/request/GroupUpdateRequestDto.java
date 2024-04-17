@@ -1,16 +1,12 @@
-package diploma.electronicrecordcard.data.dto.model;
-
-import lombok.Builder;
+package diploma.electronicrecordcard.data.dto.request;
 
 import java.time.LocalDate;
 
-@Builder
-public record GroupDto (
+public record GroupUpdateRequestDto(
         Integer id,
         String name,
         String fullName,
         LocalDate admissionDate,
-        Boolean deleted,
         Short instituteId
 ) {
 }

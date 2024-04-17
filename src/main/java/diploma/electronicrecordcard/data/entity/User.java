@@ -78,7 +78,11 @@ public class User {
     List<UserSubjectControlType> studentUserSubjectControlTypes;
 
     @ManyToMany
-    @JoinTable(name = "user_role")
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     List<Role> roles;
 
 }

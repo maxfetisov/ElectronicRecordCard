@@ -6,7 +6,7 @@
 
     <changeSet id="140420240155" author="fetisov">
         <createTable tableName="user_subject_control_type">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true"/>
             </column>
             <column name="teacher_id" type="bigint">

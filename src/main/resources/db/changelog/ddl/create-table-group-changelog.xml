@@ -6,7 +6,7 @@
 
     <changeSet id="310320240058" author="fetisov">
         <createTable tableName="student_group">
-            <column name="id" type="int">
+            <column name="id" type="serial">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar(10)">

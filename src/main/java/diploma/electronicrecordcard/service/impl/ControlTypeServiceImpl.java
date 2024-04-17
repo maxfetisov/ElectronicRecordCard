@@ -1,6 +1,7 @@
 package diploma.electronicrecordcard.service.impl;
 
 import diploma.electronicrecordcard.data.dto.model.ControlTypeDto;
+import diploma.electronicrecordcard.data.dto.request.ControlTypeUpdateRequestDto;
 import diploma.electronicrecordcard.data.entity.ControlType;
 import diploma.electronicrecordcard.exception.entitynotfound.ControlTypeNotFoundException;
 import diploma.electronicrecordcard.repository.ControlTypeRepository;
@@ -39,5 +40,13 @@ public class ControlTypeServiceImpl implements ControlTypeService {
     public ControlTypeDto getByName(String name) {
         return controlTypeMapper.toDto(controlTypeRepository.findByName(name)
                 .orElseThrow(() -> new ControlTypeNotFoundException("Название", name)));
+    }
+
+    @Override
+    public ControlTypeDto update(ControlTypeUpdateRequestDto controlTypeDto) {
+        ControlType controlType = controlTypeRepository.findById(controlTypeDto.id())
+                .orElseThrow(() -> new ControlTypeNotFoundException(controlTypeDto.id().toString()));
+        controlType.setTitle(controlTypeDto.title());
+        return controlTypeMapper.toDto(controlTypeRepository.save(controlType));
     }
 }

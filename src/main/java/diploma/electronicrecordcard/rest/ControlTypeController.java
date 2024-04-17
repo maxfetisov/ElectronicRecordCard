@@ -1,6 +1,7 @@
 package diploma.electronicrecordcard.rest;
 
 import diploma.electronicrecordcard.data.dto.model.ControlTypeDto;
+import diploma.electronicrecordcard.data.dto.request.ControlTypeUpdateRequestDto;
 import diploma.electronicrecordcard.service.ControlTypeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +37,11 @@ public class ControlTypeController {
     @GetMapping("name/{name}")
     public ResponseEntity<ControlTypeDto> getByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(controlTypeService.getByName(name));
+    }
+
+    @PutMapping
+    public ResponseEntity<ControlTypeDto> update(@RequestBody ControlTypeUpdateRequestDto request) {
+        return ResponseEntity.ok(controlTypeService.update(request));
     }
 
 }

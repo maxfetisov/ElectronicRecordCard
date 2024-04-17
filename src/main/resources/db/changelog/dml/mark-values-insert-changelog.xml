@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="130420241947" author="admin">
+    <changeSet id="130420241947" author="fetisov">
         <insert tableName="mark">
             <column name="id" value="1"/>
             <column name="name" value="NON_ADMISSION"/>

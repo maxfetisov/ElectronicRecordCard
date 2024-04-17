@@ -6,7 +6,7 @@
 
     <changeSet id="310320240044" author="fetisov">
         <createTable tableName="subject">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar(50)">
