@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.rest;
 
 import diploma.electronicrecordcard.data.dto.model.ControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.ControlTypeUpdateRequestDto;
+import diploma.electronicrecordcard.data.dto.response.ControlTypeMarkResponseDto;
 import diploma.electronicrecordcard.service.ControlTypeService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -29,6 +30,12 @@ public class ControlTypeController {
     public ResponseEntity<List<ControlTypeDto>> getAll() {
         return ResponseEntity.ok(controlTypeService.getAll());
     }
+
+    @GetMapping("with-marks")
+    public ResponseEntity<List<ControlTypeMarkResponseDto>> getAllWithMarks() {
+        return ResponseEntity.ok(controlTypeService.getAllWithMarks());
+    }
+
 
     @GetMapping("{id}")
     public ResponseEntity<ControlTypeDto> getById(@PathVariable("id") Short id) {

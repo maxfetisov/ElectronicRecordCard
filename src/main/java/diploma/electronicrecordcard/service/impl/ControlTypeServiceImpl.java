@@ -2,7 +2,9 @@ package diploma.electronicrecordcard.service.impl;
 
 import diploma.electronicrecordcard.data.dto.model.ControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.ControlTypeUpdateRequestDto;
+import diploma.electronicrecordcard.data.dto.response.ControlTypeMarkResponseDto;
 import diploma.electronicrecordcard.data.entity.ControlType;
+import diploma.electronicrecordcard.data.entity.Mark;
 import diploma.electronicrecordcard.exception.entitynotfound.ControlTypeNotFoundException;
 import diploma.electronicrecordcard.repository.ControlTypeRepository;
 import diploma.electronicrecordcard.service.ControlTypeService;
@@ -27,6 +29,17 @@ public class ControlTypeServiceImpl implements ControlTypeService {
     public List<ControlTypeDto> getAll() {
         return controlTypeRepository.findAll().stream()
                 .map(controlTypeMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<ControlTypeMarkResponseDto> getAllWithMarks() {
+        List<ControlType> controlTypes = controlTypeRepository.findAll();
+        return controlTypes.stream()
+                .map(controlType -> ControlTypeMarkResponseDto.builder()
+                        .controlTypeId(controlType.getId())
+                        .markIds(controlType.getMarks().stream().map(Mark::getId).toList())
+                        .build())
                 .toList();
     }
 
