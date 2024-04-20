@@ -1,4 +1,4 @@
-package diploma.electronicrecordcard.data.dto.model;
+package diploma.electronicrecordcard.data.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
+
 @Builder
-public record UserDto (
+public record UserUpdateRequestDto(
 
         @NotNull
         Long id,
@@ -15,6 +17,10 @@ public record UserDto (
         @NotBlank
         @Length(max = 20)
         String login,
+
+        @NotBlank
+        @Length(min = 12)
+        String password,
 
         @NotBlank
         @Length(max = 50)
@@ -37,11 +43,12 @@ public record UserDto (
         @Length(max = 20)
         String recordBookNumber,
 
-        Boolean deleted,
-
         Integer groupId,
 
         @NotNull
-        Short instituteId
+        Short instituteId,
+
+        List<Short> roles
+
 ) {
 }
