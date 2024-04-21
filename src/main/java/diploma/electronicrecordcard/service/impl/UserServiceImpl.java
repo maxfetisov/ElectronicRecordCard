@@ -2,9 +2,11 @@ package diploma.electronicrecordcard.service.impl;
 
 import diploma.electronicrecordcard.data.dto.model.RoleDto;
 import diploma.electronicrecordcard.data.dto.model.UserDto;
-import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.UserUpdateRequestDto;
 import diploma.electronicrecordcard.data.entity.Role;
 import diploma.electronicrecordcard.data.entity.User;
+import diploma.electronicrecordcard.exception.entityalreadyexists.UserAlreadyExistsException;
+import diploma.electronicrecordcard.exception.entitynotfound.UserNotFoundException;
 import diploma.electronicrecordcard.repository.UserRepository;
 import diploma.electronicrecordcard.service.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
@@ -14,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,8 +44,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserCreateRequestDto userDto) {
-        return null;
+    @Transactional
+    public UserDto create(UserDto userDto) {
+        if (userRepository.existsByLogin(userDto.login())) {
+            throw new UserAlreadyExistsException(userDto.login());
+        }
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+    }
+
+    @Override
+    @Transactional
+    public UserDto update(UserUpdateRequestDto userDto) {
+        User user = userRepository.findById(userDto.id())
+                .orElseThrow(() -> new UserNotFoundException(userDto.id().toString()));
+        if (!user.getLogin().equals(userDto.login()) && userRepository.existsByLogin(userDto.login())) {
+            throw new UserAlreadyExistsException(userDto.login());
+        }
+
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(UserDto.builder()
+                .id(userDto.id())
+                .login(userDto.login())
+                .password(user.getPassword())
+                .lastName(userDto.lastName())
+                .firstName(userDto.firstName())
+                .middleName(userDto.middleName())
+                .phoneNumber(userDto.phoneNumber())
+                .email(userDto.email())
+                .recordBookNumber(userDto.recordBookNumber())
+                .groupId(userDto.groupId())
+                .instituteId(userDto.instituteId())
+                .roles(userDto.roles())
+                .deleted(user.getDeleted())
+                .build())));
+    }
+
+    @Override
+    @Transactional
+    public UserDto delete(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
+        user.setDeleted(true);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override

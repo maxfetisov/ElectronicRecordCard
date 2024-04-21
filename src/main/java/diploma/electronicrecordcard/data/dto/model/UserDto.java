@@ -1,10 +1,13 @@
 package diploma.electronicrecordcard.data.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.List;
 
 @Builder
 public record UserDto (
@@ -15,6 +18,9 @@ public record UserDto (
         @NotBlank
         @Length(max = 20)
         String login,
+
+        @JsonIgnore
+        String password,
 
         @NotBlank
         @Length(max = 50)
@@ -42,6 +48,8 @@ public record UserDto (
         Integer groupId,
 
         @NotNull
-        Short instituteId
+        Short instituteId,
+
+        List<Short> roles
 ) {
 }

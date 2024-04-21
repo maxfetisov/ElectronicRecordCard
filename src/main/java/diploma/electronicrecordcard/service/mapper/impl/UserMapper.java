@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.service.mapper.impl;
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.entity.Group;
 import diploma.electronicrecordcard.data.entity.Institute;
+import diploma.electronicrecordcard.data.entity.Role;
 import diploma.electronicrecordcard.data.entity.User;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class UserMapper implements Mapper<UserDto, User> {
         return UserDto.builder()
                 .id(user.getId())
                 .login(user.getLogin())
+                .password(user.getPassword())
                 .email(user.getEmail())
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
@@ -24,6 +26,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .recordBookNumber(user.getRecordBookNumber())
                 .groupId(user.getGroup().getId())
                 .instituteId(user.getInstitute().getId())
+                .roles(user.getRoles().stream().map(Role::getId).toList())
                 .build();
     }
 
@@ -32,6 +35,7 @@ public class UserMapper implements Mapper<UserDto, User> {
         return User.builder()
                 .id(userDto.id())
                 .login(userDto.login())
+                .password(userDto.password())
                 .email(userDto.email())
                 .lastName(userDto.lastName())
                 .firstName(userDto.firstName())
@@ -41,6 +45,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .recordBookNumber(userDto.recordBookNumber())
                 .group(Group.builder().id(userDto.groupId()).build())
                 .institute(Institute.builder().id(userDto.instituteId()).build())
+                .roles(userDto.roles().stream().map(role -> Role.builder().id(role).build()).toList())
                 .build();
     }
 

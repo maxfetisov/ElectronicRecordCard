@@ -16,6 +16,10 @@ public record UserCreateRequestDto (
         String login,
 
         @NotBlank
+        @Length(min = 12)
+        String password,
+
+        @NotBlank
         @Length(max = 50)
         String lastName,
 
