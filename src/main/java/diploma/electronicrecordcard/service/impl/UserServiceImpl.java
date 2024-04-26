@@ -32,8 +32,26 @@ public class UserServiceImpl implements UserService {
     Mapper<RoleDto, Role> roleMapper;
 
     @Override
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<UserDto> getTeachers() {
+        return List.of();
+    }
+
+    @Override
+    public List<UserDto> getStudents() {
+        return List.of();
+    }
+
+    @Override
     public UserDto getByLogin(String login) {
-        return userMapper.toDto(userRepository.findByLogin(login));
+        return userMapper.toDto(userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException("login", login)));
     }
 
     @Override
@@ -89,6 +107,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username);
+        return userRepository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

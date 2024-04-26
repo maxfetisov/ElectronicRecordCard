@@ -8,11 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByLogin(String login);
+    Optional<User> findByLogin(String login);
 
     @Query("select r from User u join u.roles r where u.id = :id")
     List<Role> findRolesByUserId(@Param("id") Long id);

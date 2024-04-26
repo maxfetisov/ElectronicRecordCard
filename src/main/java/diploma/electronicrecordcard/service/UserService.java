@@ -9,6 +9,12 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
+    List<UserDto> getAll();
+
+    List<UserDto> getTeachers();
+
+    List<UserDto> getStudents();
+
     UserDto getByLogin(String login);
 
     List<RoleDto> getUserRoles(Long id);
