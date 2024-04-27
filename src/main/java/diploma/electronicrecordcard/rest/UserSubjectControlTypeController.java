@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -34,6 +35,13 @@ public class UserSubjectControlTypeController {
     @PostMapping("filter")
     public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteria(
             @RequestBody UserSubjectControlTypeDto criteria
+    ) {
+        return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria));
+    }
+
+    @PostMapping("filter/v2")
+    public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteria(
+            @RequestBody Map<String, Object> criteria
     ) {
         return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria));
     }

@@ -7,6 +7,7 @@ import diploma.electronicrecordcard.exception.entitynotfound.UserSubjectControlT
 import diploma.electronicrecordcard.repository.UserSubjectControlTypeRepository;
 import diploma.electronicrecordcard.service.UserSubjectControlTypeService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.UserSubjectControlTypeSpecifications;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
@@ -67,6 +69,16 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
 
+    }
+
+    @Override
+    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
+        var specification = EntitySpecifications.getSpecification(criteria, UserSubjectControlType.class);
+        return specification.map(userSubjectControlTypeRepository::findAll)
+                .orElse(userSubjectControlTypeRepository.findAll())
+                .stream()
+                .map(userSubjectControlTypeMapper::toDto)
+                .toList();
     }
 
     @Override

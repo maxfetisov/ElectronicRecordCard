@@ -14,37 +14,37 @@ public class UserSubjectControlTypeSpecifications {
     }
 
     public static Specification<UserSubjectControlType> getIdSpecification(Long id) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.get(UserSubjectControlType_.ID), id);
     }
 
     public static Specification<UserSubjectControlType> getSemesterSpecification(Short semester) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.get(UserSubjectControlType_.SEMESTER), semester);
     }
 
     public static Specification<UserSubjectControlType> getHoursNumberSpecification(Short hoursNumber) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.get(UserSubjectControlType_.HOURS_NUMBER), hoursNumber);
     }
 
     public static Specification<UserSubjectControlType> getControlTypeIdSpecification(Short id) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.join(UserSubjectControlType_.CONTROL_TYPE).get(ControlType_.ID), id);
     }
 
     public static Specification<UserSubjectControlType> getSubjectIdSpecification(Long id) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.join(UserSubjectControlType_.SUBJECT).get(Subject_.ID), id);
     }
 
     public static Specification<UserSubjectControlType> getTeacherIdSpecification(Long id) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.join(UserSubjectControlType_.TEACHER).get(User_.ID), id);
     }
 
     public static Specification<UserSubjectControlType> getStudentIdSpecification(Long id) {
-        return (root, query, criteriaBuilder)
+        return (root, _, criteriaBuilder)
                 -> criteriaBuilder.equal(root.join(UserSubjectControlType_.STUDENT).get(User_.ID), id);
     }
 
