@@ -4,6 +4,8 @@ import diploma.electronicrecordcard.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,6 +35,19 @@ public class SecurityConfiguration {
 
     JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @NonFinal
+    @Value("${cors.origins}")
+    String[] origins;
+
+    @NonFinal
+    @Value("${cors.methods}")
+    String[] methods;
+
+    @NonFinal
+    @Value("${cors.headers}")
+    String[] headers;
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,7 +55,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()
+        httpSecurity.cors()
+                .and()
+                .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .anyRequest()
@@ -63,4 +85,14 @@ public class SecurityConfiguration {
         return configuration.getAuthenticationManager();
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(origins));
+        configuration.setAllowedMethods(Arrays.asList(methods));
+        configuration.setAllowedHeaders(Arrays.asList(headers));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
