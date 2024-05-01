@@ -15,6 +15,8 @@ public interface UserService extends UserDetailsService {
 
     List<UserDto> getStudents();
 
+    UserDto getById(Long id);
+
     UserDto getByLogin(String login);
 
     List<RoleDto> getUserRoles(Long id);

@@ -43,7 +43,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserRoles(id));
     }
 
-    @GetMapping("{login}")
+    @GetMapping("{id}")
+    public ResponseEntity<UserDto> getByLogin(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.getById(id));
+    }
+
+    @GetMapping("login/{login}")
     public ResponseEntity<UserDto> getByLogin(@PathVariable("login") String login) {
         return ResponseEntity.ok(userService.getByLogin(login));
     }
