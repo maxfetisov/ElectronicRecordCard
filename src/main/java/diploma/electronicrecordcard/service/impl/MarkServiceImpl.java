@@ -39,6 +39,12 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
+    public MarkDto getById(Short id) {
+        return markMapper.toDto(markRepository.findById(id)
+                .orElseThrow(() -> new MarkNotFoundException(id.toString())));
+    }
+
+    @Override
     @Transactional
     public MarkDto update(MarkUpdateRequestDto markDto) {
         Mark mark = markRepository.findById(markDto.id())

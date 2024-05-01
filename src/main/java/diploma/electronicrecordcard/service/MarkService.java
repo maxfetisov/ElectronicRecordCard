@@ -11,6 +11,8 @@ public interface MarkService {
 
     List<MarkDto> getByControlTypeId(Short id);
 
+    MarkDto getById(Short id);
+
     MarkDto update(MarkUpdateRequestDto markDto);
 
 }

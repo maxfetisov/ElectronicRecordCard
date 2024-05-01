@@ -35,6 +35,11 @@ public class MarkController {
         return ResponseEntity.ok(markService.getByControlTypeId(id));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<MarkDto> getById(@PathVariable("id") Short id) {
+        return ResponseEntity.ok(markService.getById(id));
+    }
+
     @PutMapping
     public ResponseEntity<MarkDto> update(@Valid @RequestBody MarkUpdateRequestDto request) {
         return ResponseEntity.ok(markService.update(request));
