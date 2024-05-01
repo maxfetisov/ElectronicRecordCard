@@ -8,6 +8,8 @@ import diploma.electronicrecordcard.data.entity.User;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.nonNull;
+
 @Component
 public class UserMapper implements Mapper<UserDto, User> {
 
@@ -24,7 +26,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .deleted(user.getDeleted())
                 .phoneNumber(user.getPhoneNumber())
                 .recordBookNumber(user.getRecordBookNumber())
-                .groupId(user.getGroup().getId())
+                .groupId(nonNull(user.getGroup()) ? user.getGroup().getId() : null)
                 .instituteId(user.getInstitute().getId())
                 .roles(user.getRoles().stream().map(Role::getId).toList())
                 .build();
@@ -43,7 +45,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .deleted(userDto.deleted())
                 .phoneNumber(userDto.phoneNumber())
                 .recordBookNumber(userDto.recordBookNumber())
-                .group(Group.builder().id(userDto.groupId()).build())
+                .group(nonNull(userDto.groupId()) ? Group.builder().id(userDto.groupId()).build() : null)
                 .institute(Institute.builder().id(userDto.instituteId()).build())
                 .roles(userDto.roles().stream().map(role -> Role.builder().id(role).build()).toList())
                 .build();
