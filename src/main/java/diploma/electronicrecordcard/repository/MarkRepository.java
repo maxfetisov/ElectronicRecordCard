@@ -14,4 +14,9 @@ public interface MarkRepository extends JpaRepository<Mark, Short> {
     @Query("select ct.marks from ControlType ct where ct.id = :id ")
     List<Mark> findByControlTypeId(@Param("id") Short id);
 
+    @Query("select nextval('mark_sequence')")
+    Long getNextVersion();
+
+    List<Mark> findByVersionGreaterThan(Long version);
+
 }

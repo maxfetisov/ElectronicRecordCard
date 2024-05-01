@@ -40,6 +40,11 @@ public class MarkController {
         return ResponseEntity.ok(markService.getById(id));
     }
 
+    @GetMapping("version/{version}")
+    public ResponseEntity<List<MarkDto>> getByVersion(@PathVariable("version") Long version) {
+        return ResponseEntity.ok(markService.getByVersion(version));
+    }
+
     @PutMapping
     public ResponseEntity<MarkDto> update(@Valid @RequestBody MarkUpdateRequestDto request) {
         return ResponseEntity.ok(markService.update(request));

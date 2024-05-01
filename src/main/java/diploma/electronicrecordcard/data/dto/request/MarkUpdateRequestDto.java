@@ -13,6 +13,10 @@ public record MarkUpdateRequestDto(
 
         @NotBlank
         @Length(max = 30)
-        String title
+        String title,
+
+        @NotNull
+        Long version
+
 ) {
 }

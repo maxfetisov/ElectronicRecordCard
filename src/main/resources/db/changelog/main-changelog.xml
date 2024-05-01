@@ -20,4 +20,6 @@
     <include file="dml/role-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/mark-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/mark-control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
+
+    <include file="ddl/create-mark-sequence-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

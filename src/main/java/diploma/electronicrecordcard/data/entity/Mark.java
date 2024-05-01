@@ -41,6 +41,9 @@ public class Mark {
     @Column(name = "value")
     Short value;
 
+    @Column(name = "version")
+    Long version;
+
     @OneToMany(mappedBy = "mark")
     List<StudentMark> studentMarks;
 

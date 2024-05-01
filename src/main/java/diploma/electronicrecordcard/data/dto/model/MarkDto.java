@@ -20,6 +20,8 @@ public record MarkDto(
         String title,
 
         @NotNull
-        Short value
+        Short value,
+
+        Long version
 ) {
 }
