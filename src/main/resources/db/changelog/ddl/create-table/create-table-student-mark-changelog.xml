@@ -26,6 +26,9 @@
             <column name="completion_date" type="date">
                 <constraints nullable="false"/>
             </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

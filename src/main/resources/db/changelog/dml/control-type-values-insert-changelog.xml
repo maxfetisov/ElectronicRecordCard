@@ -9,41 +9,49 @@
             <column name="id" value="1"/>
             <column name="name" value="CREDIT"/>
             <column name="title" value="Зачет"/>
+            <column name="version" value="1"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="2"/>
             <column name="name" value="DIFFERENTIATED_CREDIT"/>
             <column name="title" value="Дифференцированный зачет"/>
+            <column name="version" value="2"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="3"/>
             <column name="name" value="EXAM"/>
             <column name="title" value="Экзамен"/>
+            <column name="version" value="3"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="4"/>
             <column name="name" value="RECERTIFICATION"/>
             <column name="title" value="Переаттестация"/>
+            <column name="version" value="4"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="5"/>
             <column name="name" value="EDUCATIONAL_PRACTICE"/>
             <column name="title" value="Учебная практика"/>
+            <column name="version" value="5"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="6"/>
             <column name="name" value="PRODUCTION_PRACTICE"/>
             <column name="title" value="Производственная практика"/>
+            <column name="version" value="6"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="7"/>
             <column name="name" value="PRE_GRADUATE_PRACTICE"/>
             <column name="title" value="Преддипломная практика"/>
+            <column name="version" value="7"/>
         </insert>
         <insert tableName="control_type">
             <column name="id" value="8"/>
             <column name="name" value="COURSE_PAPER"/>
             <column name="title" value="Курсовая работа"/>
+            <column name="version" value="8"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

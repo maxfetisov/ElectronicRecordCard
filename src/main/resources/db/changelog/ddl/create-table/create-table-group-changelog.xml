@@ -20,6 +20,9 @@
             <column name="institute_id" type="smallint">
                 <constraints foreignKeyName="fk_group_institute" references="institute(id)"/>
             </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

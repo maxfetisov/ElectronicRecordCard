@@ -4,22 +4,29 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="ddl/create-table-mark-changelog.xml" relativeToChangelogFile="true" />
-    <include file="ddl/create-table-control-type-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-institute-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-role-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-subject-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-group-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-user-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-user-role-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-user-subject-control-type-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-student-mark-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="ddl/create-table-mark-control-type-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-mark-changelog.xml" relativeToChangelogFile="true" />
+    <include file="ddl/create-table/create-table-control-type-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-institute-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-role-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-subject-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-group-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-user-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-user-role-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-user-subject-control-type-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-student-mark-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-table/create-table-mark-control-type-changelog.xml" relativeToChangelogFile="true"/>
 
     <include file="dml/control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/role-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/mark-values-insert-changelog.xml" relativeToChangelogFile="true"/>
     <include file="dml/mark-control-type-values-insert-changelog.xml" relativeToChangelogFile="true"/>
 
-    <include file="ddl/create-mark-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-mark-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-control-type-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-group-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-institute-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-subject-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-user-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-user-subject-control-type-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-student-mark-sequence-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

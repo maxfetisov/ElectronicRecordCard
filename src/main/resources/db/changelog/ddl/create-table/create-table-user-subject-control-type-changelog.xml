@@ -41,6 +41,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="hours_number" type="smallint"/>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

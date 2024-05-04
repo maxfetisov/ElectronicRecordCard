@@ -4,14 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="310320240044" author="fetisov">
-        <createTable tableName="subject">
-            <column name="id" type="bigserial">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet id="040520241649" author="fetisov">
+        <createSequence sequenceName="group_sequence" startValue="1" incrementBy="1"/>
     </changeSet>
 </databaseChangeLog>
