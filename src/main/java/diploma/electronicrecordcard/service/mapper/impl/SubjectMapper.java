@@ -13,6 +13,7 @@ public class SubjectMapper implements Mapper<SubjectDto, Subject> {
         return SubjectDto.builder()
                 .id(subject.getId())
                 .name(subject.getName())
+                .version(subject.getVersion())
                 .build();
     }
 

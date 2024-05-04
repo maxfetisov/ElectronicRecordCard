@@ -1,5 +1,6 @@
 package diploma.electronicrecordcard.data.entity;
 
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Group {
+public class Group implements Versionable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +50,9 @@ public class Group {
 
     @Column(name = "deleted")
     Boolean deleted;
+
+    @Column(name = "version")
+    Long version;
 
     @ManyToOne
     @JoinColumn(name = "institute_id")

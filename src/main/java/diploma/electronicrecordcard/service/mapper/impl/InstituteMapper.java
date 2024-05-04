@@ -14,6 +14,7 @@ public class InstituteMapper implements Mapper<InstituteDto, Institute> {
                 .id(institute.getId())
                 .name(institute.getName())
                 .fullName(institute.getFullName())
+                .version(institute.getVersion())
                 .build();
     }
 

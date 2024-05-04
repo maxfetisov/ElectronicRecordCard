@@ -29,6 +29,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .groupId(nonNull(user.getGroup()) ? user.getGroup().getId() : null)
                 .instituteId(user.getInstitute().getId())
                 .roles(user.getRoles().stream().map(Role::getId).toList())
+                .version(user.getVersion())
                 .build();
     }
 

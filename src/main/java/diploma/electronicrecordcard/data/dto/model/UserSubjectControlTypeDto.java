@@ -1,8 +1,12 @@
 package diploma.electronicrecordcard.data.dto.model;
 
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
+import lombok.Getter;
+
+import java.io.Serializable;
 
 @Builder
 public record UserSubjectControlTypeDto (
@@ -28,6 +32,10 @@ public record UserSubjectControlTypeDto (
         Long subjectId,
 
         @NotNull
-        Short controlTypeId
-){
+        Short controlTypeId,
+
+        @NotNull
+        @Getter
+        Long version
+) implements Versionable {
 }

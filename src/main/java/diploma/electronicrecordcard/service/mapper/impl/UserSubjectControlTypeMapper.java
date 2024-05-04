@@ -20,6 +20,7 @@ public class UserSubjectControlTypeMapper implements Mapper<UserSubjectControlTy
                 .studentId(userSubjectControlType.getStudent().getId())
                 .controlTypeId(userSubjectControlType.getControlType().getId())
                 .subjectId(userSubjectControlType.getSubject().getId())
+                .version(userSubjectControlType.getVersion())
                 .build();
     }
 

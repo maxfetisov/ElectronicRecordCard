@@ -8,15 +8,13 @@ import diploma.electronicrecordcard.exception.versionconflict.MarkVersionConflic
 import diploma.electronicrecordcard.repository.MarkRepository;
 import diploma.electronicrecordcard.service.MarkService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -59,9 +57,9 @@ public class MarkServiceImpl implements MarkService {
     public MarkDto update(MarkUpdateRequestDto markDto) {
         Mark mark = markRepository.findById(markDto.id())
                 .orElseThrow(() -> new MarkNotFoundException(markDto.id().toString()));
-        if (!Objects.equals(mark.getVersion(), markDto.version())) {
-            throw new MarkVersionConflictException(markDto.version());
-        }
+        VersionUtil.checkVersionAndThrowVersionConflict(mark,
+                markDto,
+                MarkVersionConflictException.class);
         mark.setTitle(markDto.title());
         mark.setVersion(markRepository.getNextVersion());
         return markMapper.toDto(markRepository.save(mark));

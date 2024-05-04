@@ -1,5 +1,6 @@
 package diploma.electronicrecordcard.data.entity;
 
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject {
+public class Subject implements Versionable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,9 @@ public class Subject {
 
     @Column(name = "name")
     String name;
+
+    @Column(name = "version")
+    Long version;
 
     @OneToMany(mappedBy = "subject")
     List<UserSubjectControlType> userSubjectControlTypes;

@@ -1,5 +1,6 @@
 package diploma.electronicrecordcard.data.entity;
 
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,7 +27,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mark {
+public class Mark implements Versionable {
 
     @Id
     @Column(name = "id")

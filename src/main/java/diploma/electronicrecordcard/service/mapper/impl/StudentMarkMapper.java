@@ -17,6 +17,7 @@ public class StudentMarkMapper implements Mapper<StudentMarkDto, StudentMark> {
                 .completionDate(studentMark.getCompletionDate())
                 .markId(studentMark.getMark().getId())
                 .userSubjectControlTypeId(studentMark.getUserSubjectControlType().getId())
+                .version(studentMark.getVersion())
                 .build();
     }
 

@@ -1,10 +1,12 @@
 package diploma.electronicrecordcard.data.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
+import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -50,6 +52,10 @@ public record UserDto (
         @NotNull
         Short instituteId,
 
-        List<Short> roles
-) {
+        List<Short> roles,
+
+        @NotNull
+        @Getter
+        Long version
+) implements Versionable {
 }

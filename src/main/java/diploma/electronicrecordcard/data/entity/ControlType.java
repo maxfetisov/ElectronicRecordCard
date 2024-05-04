@@ -1,5 +1,6 @@
 package diploma.electronicrecordcard.data.entity;
 
+import diploma.electronicrecordcard.data.Versionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ControlType {
+public class ControlType implements Versionable {
 
     @Id
     @Column(name = "id")
@@ -36,6 +37,9 @@ public class ControlType {
 
     @Column(name = "title")
     String title;
+
+    @Column(name = "version")
+    Long version;
 
     @OneToMany(mappedBy = "controlType")
     List<UserSubjectControlType> userSubjectControlTypes;
