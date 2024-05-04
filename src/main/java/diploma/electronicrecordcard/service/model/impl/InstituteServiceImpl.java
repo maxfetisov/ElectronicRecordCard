@@ -1,0 +1,70 @@
+package diploma.electronicrecordcard.service.model.impl;
+
+import diploma.electronicrecordcard.data.dto.model.InstituteDto;
+import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
+import diploma.electronicrecordcard.data.entity.Institute;
+import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundException;
+import diploma.electronicrecordcard.exception.versionconflict.InstituteVersionConflictException;
+import diploma.electronicrecordcard.repository.model.InstituteRepository;
+import diploma.electronicrecordcard.service.model.InstituteService;
+import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.VersionUtil;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
+public class InstituteServiceImpl implements InstituteService {
+
+    InstituteRepository instituteRepository;
+
+    Mapper<InstituteDto, Institute> instituteMapper;
+
+    @Override
+    public List<InstituteDto> findAll() {
+        return instituteRepository.findAll().stream()
+                .map(instituteMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public InstituteDto findById(Short id) {
+        return instituteMapper.toDto(instituteRepository.findById(id)
+                .orElseThrow(() -> new InstituteNotFoundException(id.toString())));
+    }
+
+    @Override
+    public InstituteDto create(InstituteCreateRequestDto instituteDto) {
+        return instituteMapper.toDto(instituteRepository.save(instituteMapper.toEntity(InstituteDto.builder()
+                .name(instituteDto.name())
+                .fullName(instituteDto.fullName())
+                .version(instituteRepository.getNextVersion())
+                .build())));
+    }
+
+    @Override
+    public InstituteDto update(InstituteDto instituteDto) {
+        Institute institute = instituteRepository.findById(instituteDto.id())
+                .orElseThrow(() -> new InstituteNotFoundException(instituteDto.id().toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(institute,
+                instituteDto,
+                InstituteVersionConflictException.class);
+        Institute newInstitute = instituteMapper.toEntity(instituteDto);
+        newInstitute.setVersion(instituteRepository.getNextVersion());
+        return instituteMapper.toDto(instituteRepository.save(newInstitute));
+    }
+
+    @Override
+    public void deleteById(Short id) {
+        if(!instituteRepository.existsById(id)) {
+            throw new InstituteNotFoundException(id.toString());
+        }
+        instituteRepository.deleteById(id);
+    }
+
+}

@@ -1,11 +1,11 @@
 package diploma.electronicrecordcard.exception.versionconflict;
 
+import static diploma.electronicrecordcard.data.constant.EntityNameConstants.MARK;
+
 public class MarkVersionConflictException extends VersionConflictException {
 
-    private static final String ENTITY_NAME = "Оценка";
-
     public MarkVersionConflictException(Long version) {
-        super(ENTITY_NAME, version);
+        super(MARK, version);
     }
 
 }

@@ -24,6 +24,7 @@ public class ControlTypeMapper implements Mapper<ControlTypeDto, ControlType> {
                 .id(controlTypeDto.id())
                 .name(controlTypeDto.name())
                 .title(controlTypeDto.title())
+                .version(controlTypeDto.getVersion())
                 .build();
     }
 

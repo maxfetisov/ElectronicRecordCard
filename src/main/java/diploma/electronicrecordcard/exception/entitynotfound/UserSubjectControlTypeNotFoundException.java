@@ -1,17 +1,17 @@
 package diploma.electronicrecordcard.exception.entitynotfound;
 
-public class UserSubjectControlTypeNotFoundException extends EntityNotFoundException {
+import static diploma.electronicrecordcard.data.constant.EntityNameConstants.USER_SUBJECT_CONTROL_TYPE;
 
-    private static final String ENTITY_NAME = "Пользователь - Предмет - Тип контроля";
+public class UserSubjectControlTypeNotFoundException extends EntityNotFoundException {
 
     private static final String DEFAULT_FIELD_NAME = "id";
 
     public UserSubjectControlTypeNotFoundException(String value) {
-        super(ENTITY_NAME, DEFAULT_FIELD_NAME, value);
+        super(USER_SUBJECT_CONTROL_TYPE, DEFAULT_FIELD_NAME, value);
     }
 
     public UserSubjectControlTypeNotFoundException(String fieldName, String value) {
-        super(ENTITY_NAME, fieldName, value);
+        super(USER_SUBJECT_CONTROL_TYPE, fieldName, value);
     }
 
 

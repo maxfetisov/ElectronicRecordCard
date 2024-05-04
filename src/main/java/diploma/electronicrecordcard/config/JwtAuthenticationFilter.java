@@ -2,8 +2,8 @@ package diploma.electronicrecordcard.config;
 
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.entity.User;
-import diploma.electronicrecordcard.service.JwtService;
-import diploma.electronicrecordcard.service.UserService;
+import diploma.electronicrecordcard.service.account.JwtService;
+import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

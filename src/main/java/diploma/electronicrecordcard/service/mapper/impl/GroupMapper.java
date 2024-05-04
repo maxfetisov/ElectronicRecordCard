@@ -31,6 +31,7 @@ public class GroupMapper implements Mapper<GroupDto, Group> {
                 .deleted(groupDto.deleted())
                 .fullName(groupDto.fullName())
                 .institute(Institute.builder().id(groupDto.instituteId()).build())
+                .version(groupDto.getVersion())
                 .build();
     }
 

@@ -19,10 +19,9 @@ public class VersionUtil {
     public static void checkVersionAndThrowVersionConflict(Versionable oldObject,
                                                            Versionable newObject,
                                                            Class<? extends VersionConflictException> exceptionClass) {
-        ;
         if(!checkVersion(oldObject, newObject)) {
             try {
-                throw exceptionClass.getConstructor(Long.class).newInstance(oldObject.getVersion());
+                throw exceptionClass.getConstructor(Long.class).newInstance(newObject.getVersion());
             } catch (InstantiationException
                      | IllegalAccessException
                      | InvocationTargetException

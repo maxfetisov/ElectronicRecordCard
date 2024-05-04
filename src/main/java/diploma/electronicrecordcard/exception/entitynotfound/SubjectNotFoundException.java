@@ -1,17 +1,17 @@
 package diploma.electronicrecordcard.exception.entitynotfound;
 
-public class SubjectNotFoundException extends EntityNotFoundException{
+import static diploma.electronicrecordcard.data.constant.EntityNameConstants.SUBJECT;
 
-    private static final String ENTITY_NAME = "Предмет";
+public class SubjectNotFoundException extends EntityNotFoundException{
 
     private static final String DEFAULT_FIELD_NAME = "id";
 
     public SubjectNotFoundException(String value) {
-        super(ENTITY_NAME, DEFAULT_FIELD_NAME, value);
+        super(SUBJECT, DEFAULT_FIELD_NAME, value);
     }
 
     public SubjectNotFoundException(String fieldName, String value) {
-        super(ENTITY_NAME, fieldName, value);
+        super(SUBJECT, fieldName, value);
     }
 
 }

@@ -34,6 +34,7 @@ public class UserSubjectControlTypeMapper implements Mapper<UserSubjectControlTy
                 .student(User.builder().id(userSubjectControlTypeDto.studentId()).build())
                 .controlType(ControlType.builder().id(userSubjectControlTypeDto.controlTypeId()).build())
                 .subject(Subject.builder().id(userSubjectControlTypeDto.subjectId()).build())
+                .version(userSubjectControlTypeDto.getVersion())
                 .build();
     }
 }

@@ -1,16 +1,16 @@
 package diploma.electronicrecordcard.exception.entitynotfound;
 
-public class ControlTypeNotFoundException extends EntityNotFoundException {
+import static diploma.electronicrecordcard.data.constant.EntityNameConstants.CONTROL_TYPE;
 
-    private static final String ENTITY_NAME = "Тип контроля";
+public class ControlTypeNotFoundException extends EntityNotFoundException {
 
     private static final String DEFAULT_FIELD_NAME = "id";
 
     public ControlTypeNotFoundException(String value) {
-        super(ENTITY_NAME, DEFAULT_FIELD_NAME, value);
+        super(CONTROL_TYPE, DEFAULT_FIELD_NAME, value);
     }
 
     public ControlTypeNotFoundException(String fieldName, String value) {
-        super(ENTITY_NAME, fieldName, value);
+        super(CONTROL_TYPE, fieldName, value);
     }
 }

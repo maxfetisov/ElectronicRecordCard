@@ -26,6 +26,7 @@ public class MarkMapper implements Mapper<MarkDto, Mark> {
                 .name(markDto.name())
                 .title(markDto.title())
                 .value(markDto.value())
+                .version(markDto.getVersion())
                 .build();
     }
 

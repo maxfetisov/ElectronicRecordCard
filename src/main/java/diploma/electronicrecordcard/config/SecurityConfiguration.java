@@ -1,6 +1,6 @@
 package diploma.electronicrecordcard.config;
 
-import diploma.electronicrecordcard.service.UserService;
+import diploma.electronicrecordcard.service.model.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

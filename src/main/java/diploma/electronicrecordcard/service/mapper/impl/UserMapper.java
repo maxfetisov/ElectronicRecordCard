@@ -49,6 +49,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .group(nonNull(userDto.groupId()) ? Group.builder().id(userDto.groupId()).build() : null)
                 .institute(Institute.builder().id(userDto.instituteId()).build())
                 .roles(userDto.roles().stream().map(role -> Role.builder().id(role).build()).toList())
+                .version(userDto.getVersion())
                 .build();
     }
 
