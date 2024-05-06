@@ -1,6 +1,5 @@
 package diploma.electronicrecordcard.rest.model;
 
-import diploma.electronicrecordcard.data.dto.model.GroupDto;
 import diploma.electronicrecordcard.data.dto.model.RoleDto;
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;

@@ -13,16 +13,16 @@ public final class EntitySpecifications {
         throw new AssertionError("Cannot be instantiated");
     }
 
-    public static <T> Optional<Specification<T>> getSpecification(Map<String, Object> criteria, Class<T> entityClass) {
+    public static <T> Optional<Specification<T>> getSpecification(Map<String, Object> criteria) {
         List<Specification<T>> specifications = new ArrayList<>(criteria.size());
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {
-            specifications.add(getSpecification(entry.getKey(), entry.getValue(), entityClass));
+            specifications.add(getSpecification(entry.getKey(), entry.getValue()));
         }
         return specifications.stream()
                 .reduce(Specification::and);
     }
 
-    public static <T> Specification<T> getSpecification(String propertyName, Object value, Class<T> entityClass) {
+    public static <T> Specification<T> getSpecification(String propertyName, Object value) {
         return (root, _, criteriaBuilder) -> {
             String[] propertyNameParts = propertyName.split("\\.");
             if(propertyNameParts.length == 0) {
@@ -33,7 +33,7 @@ public final class EntitySpecifications {
             }
             var join = root.join(propertyNameParts[0]);
             for(int i = 1; i < propertyNameParts.length - 1; i++) {
-                join.join(propertyNameParts[i]);
+                join = join.join(propertyNameParts[i]);
             }
             return criteriaBuilder.equal(join.get(propertyNameParts[propertyNameParts.length - 1]), value);
         };

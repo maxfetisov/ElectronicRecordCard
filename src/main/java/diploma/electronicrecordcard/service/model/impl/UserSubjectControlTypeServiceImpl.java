@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -74,13 +75,16 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
+    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<UserSubjectControlType>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<UserSubjectControlType>getVersionSpecification(version);
+        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
+                .orElse(versionSpecification)));
+    }
+
+    @Override
     public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
-        var specification = EntitySpecifications.getSpecification(criteria, UserSubjectControlType.class);
-        return specification.map(userSubjectControlTypeRepository::findAll)
-                .orElse(userSubjectControlTypeRepository.findAll())
-                .stream()
-                .map(userSubjectControlTypeMapper::toDto)
-                .toList();
+        return getByCriteria(EntitySpecifications.<UserSubjectControlType>getSpecification(criteria));
     }
 
     @Override
@@ -121,5 +125,15 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
             throw new UserSubjectControlTypeNotFoundException(id.toString());
         }
         userSubjectControlTypeRepository.deleteById(id);
+    }
+
+    private List<UserSubjectControlTypeDto> getByCriteria(
+            Optional<Specification<UserSubjectControlType>> specification
+    ) {
+        return specification.map(userSubjectControlTypeRepository::findAll)
+                .orElse(userSubjectControlTypeRepository.findAll())
+                .stream()
+                .map(userSubjectControlTypeMapper::toDto)
+                .toList();
     }
 }

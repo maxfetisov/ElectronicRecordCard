@@ -10,7 +10,10 @@ public interface UserSubjectControlTypeService {
 
     List<UserSubjectControlTypeDto> getAll();
 
+    @Deprecated
     List<UserSubjectControlTypeDto> getByCriteria(UserSubjectControlTypeDto criteria);
+
+    List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version);
 
     List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria);
 

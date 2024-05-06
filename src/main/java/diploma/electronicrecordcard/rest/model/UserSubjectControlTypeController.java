@@ -35,6 +35,12 @@ public class UserSubjectControlTypeController {
         return ResponseEntity.ok(userSubjectControlTypeService.getAll());
     }
 
+    @GetMapping("version/{version}")
+    public ResponseEntity<List<UserSubjectControlTypeDto>> getByVersion(@PathVariable("version") Long version) {
+        return ResponseEntity.ok(userSubjectControlTypeVersionService.getByVersion(version));
+    }
+
+    @Deprecated
     @PostMapping("filter")
     public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteria(
             @RequestBody UserSubjectControlTypeDto criteria
@@ -49,10 +55,12 @@ public class UserSubjectControlTypeController {
         return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria));
     }
 
-
-    @GetMapping("version/{version}")
-    public ResponseEntity<List<UserSubjectControlTypeDto>> getByVersion(@PathVariable("version") Long version) {
-        return ResponseEntity.ok(userSubjectControlTypeVersionService.getByVersion(version));
+    @PostMapping("version/{version}/filter")
+    public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteriaAndVersion(
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria, version));
     }
 
     @PostMapping

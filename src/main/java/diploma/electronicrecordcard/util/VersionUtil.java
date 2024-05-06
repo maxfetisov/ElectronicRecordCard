@@ -2,9 +2,12 @@ package diploma.electronicrecordcard.util;
 
 import diploma.electronicrecordcard.data.Versionable;
 import diploma.electronicrecordcard.exception.versionconflict.VersionConflictException;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+
+import static diploma.electronicrecordcard.data.constant.FieldConstants.VERSION;
 
 public class VersionUtil {
 
@@ -29,5 +32,9 @@ public class VersionUtil {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static <T> Specification<T> getVersionSpecification(Long version) {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(VERSION), version));
     }
 }
