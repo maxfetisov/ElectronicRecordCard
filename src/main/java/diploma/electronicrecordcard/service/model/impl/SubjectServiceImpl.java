@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public SubjectDto create(SubjectCreateRequestDto subjectDto) {
         return subjectMapper.toDto(subjectRepository.save(subjectMapper.toEntity(SubjectDto.builder()
                 .name(subjectDto.name())
@@ -53,7 +54,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public SubjectDto update(SubjectDto subjectDto) {
         Subject subject = subjectRepository.findById(subjectDto.id())
                 .orElseThrow(() -> new SubjectNotFoundException(subjectDto.id().toString()));
@@ -64,6 +65,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         if(!subjectRepository.existsById(id)) {
             throw new SubjectNotFoundException(id.toString());

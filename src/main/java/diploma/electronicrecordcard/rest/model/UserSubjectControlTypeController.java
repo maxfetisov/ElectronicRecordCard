@@ -80,7 +80,7 @@ public class UserSubjectControlTypeController {
     @DeleteMapping("{id}")
     public ResponseEntity<UserSubjectControlTypeDto> delete(@PathVariable("id") Long id) {
         userSubjectControlTypeService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

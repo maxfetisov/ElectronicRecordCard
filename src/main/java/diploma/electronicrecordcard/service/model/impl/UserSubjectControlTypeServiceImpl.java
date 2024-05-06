@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserSubjectControlTypeDto create(UserSubjectControlTypeCreateRequestDto userSubjectControlTypeDto) {
         return userSubjectControlTypeMapper.toDto(userSubjectControlTypeRepository.save(
                 userSubjectControlTypeMapper.toEntity(
@@ -104,6 +107,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserSubjectControlTypeDto update(UserSubjectControlTypeDto userSubjectControlTypeDto) {
         UserSubjectControlType userSubjectControlType = userSubjectControlTypeRepository
                 .findById(userSubjectControlTypeDto.id())
@@ -120,6 +124,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if(!userSubjectControlTypeRepository.existsById(id)) {
             throw new UserSubjectControlTypeNotFoundException(id.toString());

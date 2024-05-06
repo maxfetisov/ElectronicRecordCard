@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ public class InstituteServiceImpl implements InstituteService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public InstituteDto create(InstituteCreateRequestDto instituteDto) {
         return instituteMapper.toDto(instituteRepository.save(instituteMapper.toEntity(InstituteDto.builder()
                 .name(instituteDto.name())
@@ -52,6 +55,7 @@ public class InstituteServiceImpl implements InstituteService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public InstituteDto update(InstituteDto instituteDto) {
         Institute institute = instituteRepository.findById(instituteDto.id())
                 .orElseThrow(() -> new InstituteNotFoundException(instituteDto.id().toString()));
@@ -64,6 +68,7 @@ public class InstituteServiceImpl implements InstituteService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Short id) {
         if(!instituteRepository.existsById(id)) {
             throw new InstituteNotFoundException(id.toString());

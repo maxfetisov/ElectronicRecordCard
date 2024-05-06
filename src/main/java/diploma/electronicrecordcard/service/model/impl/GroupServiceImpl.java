@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -59,6 +61,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public GroupDto create(GroupCreateRequestDto groupDto) {
         if(!instituteRepository.existsById(groupDto.instituteId())) {
             throw new InstituteNotFoundException(groupDto.instituteId().toString());
@@ -74,6 +77,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public GroupDto update(GroupUpdateRequestDto groupDto) {
         Group group = groupRepository.findById(groupDto.id())
                 .orElseThrow(() -> new GroupNotFoundException(groupDto.id().toString()));
@@ -92,10 +96,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public GroupDto delete(Integer id) {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new GroupNotFoundException(id.toString()));
         group.setDeleted(true);
+        group.setVersion(groupRepository.getNextVersion());
         return groupMapper.toDto(groupRepository.save(group));
     }
 

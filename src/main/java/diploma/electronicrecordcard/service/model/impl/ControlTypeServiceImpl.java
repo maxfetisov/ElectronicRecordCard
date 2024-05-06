@@ -16,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class ControlTypeServiceImpl implements ControlTypeService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public ControlTypeDto update(ControlTypeUpdateRequestDto controlTypeDto) {
         ControlType controlType = controlTypeRepository.findById(controlTypeDto.id())
                 .orElseThrow(() -> new ControlTypeNotFoundException(controlTypeDto.id().toString()));

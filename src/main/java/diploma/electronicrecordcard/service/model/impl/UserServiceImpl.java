@@ -20,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto create(UserDto userDto) {
         if (userRepository.existsByLogin(userDto.login())) {
             throw new UserAlreadyExistsException(userDto.login());
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto update(UserUpdateRequestDto userDto) {
         User user = userRepository.findById(userDto.id())
                 .orElseThrow(() -> new UserNotFoundException(userDto.id().toString()));
@@ -113,11 +114,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto delete(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
         user.setDeleted(true);
+        user.setVersion(userRepository.getNextVersion());
         return userMapper.toDto(userRepository.save(user));
     }
 
