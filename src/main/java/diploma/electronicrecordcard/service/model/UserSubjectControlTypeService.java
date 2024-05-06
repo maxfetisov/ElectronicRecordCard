@@ -2,20 +2,16 @@ package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
+import diploma.electronicrecordcard.service.criteria.CriteriaService;
 
 import java.util.List;
-import java.util.Map;
 
-public interface UserSubjectControlTypeService {
+public interface UserSubjectControlTypeService extends CriteriaService<UserSubjectControlTypeDto> {
 
     List<UserSubjectControlTypeDto> getAll();
 
     @Deprecated
     List<UserSubjectControlTypeDto> getByCriteria(UserSubjectControlTypeDto criteria);
-
-    List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version);
-
-    List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria);
 
     UserSubjectControlTypeDto create(UserSubjectControlTypeCreateRequestDto userSubjectControlTypeDto);
 

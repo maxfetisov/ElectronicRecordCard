@@ -11,16 +11,20 @@ import diploma.electronicrecordcard.exception.versionconflict.UserVersionConflic
 import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -122,4 +126,26 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
+
+    @Override
+    public List<UserDto> getByCriteria(Map<String, Object> criteria) {
+        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+    }
+
+    @Override
+    public List<UserDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<User>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<User>getVersionSpecification(version);
+        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
+                .orElse(versionSpecification)));
+    }
+
+    private List<UserDto> getByCriteria(Optional<Specification<User>> specification) {
+        return specification.map(userRepository::findAll)
+                .orElse(userRepository.findAll())
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
+
 }

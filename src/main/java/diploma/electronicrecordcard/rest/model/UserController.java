@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -59,6 +60,23 @@ public class UserController {
     @GetMapping("login/{login}")
     public ResponseEntity<UserDto> getByLogin(@PathVariable("login") String login) {
         return ResponseEntity.ok(userService.getByLogin(login));
+    }
+
+
+
+    @PostMapping("filter")
+    public ResponseEntity<List<UserDto>> getByCriteria(
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(userService.getByCriteria(criteria));
+    }
+
+    @PostMapping("version/{version}/filter")
+    public ResponseEntity<List<UserDto>> getByCriteriaAndVersion(
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(userService.getByCriteria(criteria, version));
     }
 
     @PostMapping("register")

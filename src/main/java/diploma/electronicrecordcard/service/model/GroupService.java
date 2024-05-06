@@ -4,10 +4,11 @@ package diploma.electronicrecordcard.service.model;
 import diploma.electronicrecordcard.data.dto.model.GroupDto;
 import diploma.electronicrecordcard.data.dto.request.GroupCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.request.GroupUpdateRequestDto;
+import diploma.electronicrecordcard.service.criteria.CriteriaService;
 
 import java.util.List;
 
-public interface GroupService {
+public interface GroupService extends CriteriaService<GroupDto> {
 
     List<GroupDto> getAll();
 

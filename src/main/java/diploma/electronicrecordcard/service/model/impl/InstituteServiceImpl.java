@@ -8,13 +8,17 @@ import diploma.electronicrecordcard.exception.versionconflict.InstituteVersionCo
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
 import diploma.electronicrecordcard.service.model.InstituteService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -67,4 +71,24 @@ public class InstituteServiceImpl implements InstituteService {
         instituteRepository.deleteById(id);
     }
 
+    @Override
+    public List<InstituteDto> getByCriteria(Map<String, Object> criteria) {
+        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+    }
+
+    @Override
+    public List<InstituteDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<Institute>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Institute>getVersionSpecification(version);
+        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
+                .orElse(versionSpecification)));
+    }
+
+    private List<InstituteDto> getByCriteria(Optional<Specification<Institute>> specification) {
+        return specification.map(instituteRepository::findAll)
+                .orElse(instituteRepository.findAll())
+                .stream()
+                .map(instituteMapper::toDto)
+                .toList();
+    }
 }

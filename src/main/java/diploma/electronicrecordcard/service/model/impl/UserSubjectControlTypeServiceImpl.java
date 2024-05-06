@@ -84,7 +84,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
 
     @Override
     public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
-        return getByCriteria(EntitySpecifications.<UserSubjectControlType>getSpecification(criteria));
+        return getByCriteria(EntitySpecifications.getSpecification(criteria));
     }
 
     @Override

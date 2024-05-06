@@ -8,14 +8,18 @@ import diploma.electronicrecordcard.exception.versionconflict.SubjectVersionConf
 import diploma.electronicrecordcard.repository.model.SubjectRepository;
 import diploma.electronicrecordcard.service.model.SubjectService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -67,4 +71,24 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.deleteById(id);
     }
 
+    @Override
+    public List<SubjectDto> getByCriteria(Map<String, Object> criteria) {
+        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+    }
+
+    @Override
+    public List<SubjectDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<Subject>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Subject>getVersionSpecification(version);
+        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
+                .orElse(versionSpecification)));
+    }
+
+    private List<SubjectDto> getByCriteria(Optional<Specification<Subject>> specification) {
+        return specification.map(subjectRepository::findAll)
+                .orElse(subjectRepository.findAll())
+                .stream()
+                .map(subjectMapper::toDto)
+                .toList();
+    }
 }

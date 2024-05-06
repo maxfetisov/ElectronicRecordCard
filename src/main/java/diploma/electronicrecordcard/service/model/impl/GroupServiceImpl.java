@@ -12,14 +12,18 @@ import diploma.electronicrecordcard.repository.model.GroupRepository;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
 import diploma.electronicrecordcard.service.model.GroupService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -95,4 +99,24 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.toDto(groupRepository.save(group));
     }
 
+    @Override
+    public List<GroupDto> getByCriteria(Map<String, Object> criteria) {
+        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+    }
+
+    @Override
+    public List<GroupDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<Group>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Group>getVersionSpecification(version);
+        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
+                .orElse(versionSpecification)));
+    }
+
+    private List<GroupDto> getByCriteria(Optional<Specification<Group>> specification) {
+        return specification.map(groupRepository::findAll)
+                .orElse(groupRepository.findAll())
+                .stream()
+                .map(groupMapper::toDto)
+                .toList();
+    }
 }

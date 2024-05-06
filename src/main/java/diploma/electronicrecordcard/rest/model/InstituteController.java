@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -44,6 +45,21 @@ public class InstituteController {
     @GetMapping("{id}")
     public ResponseEntity<InstituteDto> getById(@PathVariable("id") Short id) {
         return ResponseEntity.ok(instituteService.findById(id));
+    }
+
+    @PostMapping("filter")
+    public ResponseEntity<List<InstituteDto>> getByCriteria(
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(instituteService.getByCriteria(criteria));
+    }
+
+    @PostMapping("version/{version}/filter")
+    public ResponseEntity<List<InstituteDto>> getByCriteriaAndVersion(
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(instituteService.getByCriteria(criteria, version));
     }
 
     @PostMapping
