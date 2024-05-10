@@ -6,6 +6,7 @@ import diploma.electronicrecordcard.data.entity.Institute;
 import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.InstituteVersionConflictException;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.InstituteService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.INSTITUTE;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class InstituteServiceImpl implements InstituteService {
     InstituteRepository instituteRepository;
 
     Mapper<InstituteDto, Institute> instituteMapper;
+
+    DeletionService deletionService;
 
     @Override
     public List<InstituteDto> findAll() {
@@ -69,11 +74,12 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     @Transactional
-    public void deleteById(Short id) {
+    public void delete(Short id) {
         if(!instituteRepository.existsById(id)) {
             throw new InstituteNotFoundException(id.toString());
         }
         instituteRepository.deleteById(id);
+        deletionService.create(INSTITUTE, id.longValue());
     }
 
     @Override

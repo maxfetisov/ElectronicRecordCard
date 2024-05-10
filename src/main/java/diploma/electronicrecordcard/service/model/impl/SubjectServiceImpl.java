@@ -6,6 +6,7 @@ import diploma.electronicrecordcard.data.entity.Subject;
 import diploma.electronicrecordcard.exception.entitynotfound.SubjectNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.SubjectVersionConflictException;
 import diploma.electronicrecordcard.repository.model.SubjectRepository;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.SubjectService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.SUBJECT;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class SubjectServiceImpl implements SubjectService {
     SubjectRepository subjectRepository;
 
     Mapper<SubjectDto, Subject> subjectMapper;
+
+    DeletionService deletionService;
 
     @Override
     public List<SubjectDto> getAll() {
@@ -66,11 +71,12 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         if(!subjectRepository.existsById(id)) {
             throw new SubjectNotFoundException(id.toString());
         }
         subjectRepository.deleteById(id);
+        deletionService.create(SUBJECT, id);
     }
 
     @Override

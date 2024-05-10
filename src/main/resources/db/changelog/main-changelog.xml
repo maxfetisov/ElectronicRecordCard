@@ -29,4 +29,7 @@
     <include file="ddl/create-sequence/create-user-sequence-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-sequence/create-user-subject-control-type-sequence-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-sequence/create-student-mark-sequence-changelog.xml" relativeToChangelogFile="true"/>
+
+    <include file="ddl/create-table/create-table-deletion-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="ddl/create-sequence/create-deletion-sequence-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -7,6 +7,7 @@ import diploma.electronicrecordcard.exception.entitynotfound.StudentMarkNotFound
 import diploma.electronicrecordcard.exception.versionconflict.StudentMarkVersionConflictException;
 import diploma.electronicrecordcard.repository.model.StudentMarkRepository;
 import diploma.electronicrecordcard.service.mapper.Mapper;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.StudentMarkService;
 import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.STUDENT_MARK;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class StudentMarkServiceImpl implements StudentMarkService {
     StudentMarkRepository studentMarkRepository;
 
     Mapper<StudentMarkDto, StudentMark> studentMarkMapper;
+
+    DeletionService deletionService;
 
     @Override
     public List<StudentMarkDto> getAll() {
@@ -75,6 +80,7 @@ public class StudentMarkServiceImpl implements StudentMarkService {
             throw new StudentMarkNotFoundException(id.toString());
         }
         studentMarkRepository.deleteById(id);
+        deletionService.create(STUDENT_MARK, id);
     }
 
     @Override

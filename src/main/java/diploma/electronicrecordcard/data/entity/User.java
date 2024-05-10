@@ -79,10 +79,12 @@ public class User implements UserDetails, Versionable {
     @JoinColumn(name = "institute_id")
     Institute institute;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany
+    @JoinColumn(name = "student_id")
     List<UserSubjectControlType> teacherUserSubjectControlTypes;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany
+    @JoinColumn(name = "student_id")
     List<UserSubjectControlType> studentUserSubjectControlTypes;
 
     @ManyToMany

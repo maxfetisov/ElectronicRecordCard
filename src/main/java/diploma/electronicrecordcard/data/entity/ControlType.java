@@ -4,6 +4,7 @@ import diploma.electronicrecordcard.data.Versionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -41,7 +42,8 @@ public class ControlType implements Versionable {
     @Column(name = "version")
     Long version;
 
-    @OneToMany(mappedBy = "controlType")
+    @OneToMany
+    @JoinColumn(name = "control_type_id")
     List<UserSubjectControlType> userSubjectControlTypes;
 
     @ManyToMany(mappedBy = "controlTypes")

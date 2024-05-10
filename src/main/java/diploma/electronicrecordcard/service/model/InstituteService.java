@@ -16,6 +16,6 @@ public interface InstituteService extends CriteriaService<InstituteDto> {
 
     InstituteDto update(InstituteDto instituteDto);
 
-    void deleteById(Short id);
+    void delete(Short id);
 
 }

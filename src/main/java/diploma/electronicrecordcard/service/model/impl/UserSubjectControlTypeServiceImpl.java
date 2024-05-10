@@ -6,6 +6,7 @@ import diploma.electronicrecordcard.data.entity.UserSubjectControlType;
 import diploma.electronicrecordcard.exception.entitynotfound.UserSubjectControlTypeNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.UserSubjectControlTypeVersionConflictException;
 import diploma.electronicrecordcard.repository.model.UserSubjectControlTypeRepository;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.UserSubjectControlTypeService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.USER_SUBJECT_CONTROL_TYPE;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -34,6 +36,8 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     UserSubjectControlTypeRepository userSubjectControlTypeRepository;
 
     Mapper<UserSubjectControlTypeDto, UserSubjectControlType> userSubjectControlTypeMapper;
+
+    DeletionService deletionService;
 
     @Override
     public List<UserSubjectControlTypeDto> getAll() {
@@ -130,6 +134,8 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
             throw new UserSubjectControlTypeNotFoundException(id.toString());
         }
         userSubjectControlTypeRepository.deleteById(id);
+        deletionService.create(USER_SUBJECT_CONTROL_TYPE, id);
+
     }
 
     private List<UserSubjectControlTypeDto> getByCriteria(

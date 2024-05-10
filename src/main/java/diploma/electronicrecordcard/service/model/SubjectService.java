@@ -16,6 +16,6 @@ public interface SubjectService extends CriteriaService<SubjectDto> {
 
     SubjectDto update(SubjectDto subjectDto);
 
-    void deleteById(Long id);
+    void delete(Long id);
 
 }

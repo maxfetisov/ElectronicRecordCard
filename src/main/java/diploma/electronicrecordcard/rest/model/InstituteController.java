@@ -76,7 +76,7 @@ public class InstituteController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Short id) {
-        instituteService.deleteById(id);
+        instituteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

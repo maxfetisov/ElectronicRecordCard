@@ -48,7 +48,6 @@ public class StudentMark implements Versionable {
     Mark mark;
 
     @ManyToOne
-    @JoinColumn(name = "user_subject_control_type_id")
     UserSubjectControlType userSubjectControlType;
 
 }
