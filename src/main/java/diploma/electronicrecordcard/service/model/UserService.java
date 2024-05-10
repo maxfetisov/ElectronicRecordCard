@@ -26,6 +26,6 @@ public interface UserService extends UserDetailsService, CriteriaService<UserDto
 
     UserDto update(UserUpdateRequestDto userDto);
 
-    UserDto delete(Long id);
+    UserDto delete(Long id, Long version);
 
 }

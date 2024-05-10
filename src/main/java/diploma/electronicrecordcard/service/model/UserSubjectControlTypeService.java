@@ -17,6 +17,6 @@ public interface UserSubjectControlTypeService extends CriteriaService<UserSubje
 
     UserSubjectControlTypeDto update(UserSubjectControlTypeDto userSubjectControlTypeDto);
 
-    void delete(Long id);
+    void delete(Long id, Long version);
 
 }

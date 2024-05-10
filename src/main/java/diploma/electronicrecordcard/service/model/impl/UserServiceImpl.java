@@ -115,9 +115,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public UserDto delete(Long id) {
+    public UserDto delete(Long id, Long version) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(user, () -> version, UserVersionConflictException.class);
         user.setDeleted(true);
         user.setVersion(userRepository.getNextVersion());
         return userMapper.toDto(userRepository.save(user));

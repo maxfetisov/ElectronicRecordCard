@@ -129,10 +129,12 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        if(!userSubjectControlTypeRepository.existsById(id)) {
-            throw new UserSubjectControlTypeNotFoundException(id.toString());
-        }
+    public void delete(Long id, Long version) {
+        UserSubjectControlType userSubjectControlType = userSubjectControlTypeRepository.findById(id)
+                .orElseThrow(() -> new UserSubjectControlTypeNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(userSubjectControlType,
+                () -> version,
+                UserSubjectControlTypeVersionConflictException.class);
         userSubjectControlTypeRepository.deleteById(id);
         deletionService.create(USER_SUBJECT_CONTROL_TYPE, id);
 

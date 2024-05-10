@@ -20,6 +20,6 @@ public interface GroupService extends CriteriaService<GroupDto> {
 
     GroupDto update(GroupUpdateRequestDto groupDto);
 
-    GroupDto delete(Integer id);
+    GroupDto delete(Integer id, Long version);
 
 }

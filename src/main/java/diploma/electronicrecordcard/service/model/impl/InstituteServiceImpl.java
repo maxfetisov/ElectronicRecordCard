@@ -74,10 +74,12 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     @Transactional
-    public void delete(Short id) {
-        if(!instituteRepository.existsById(id)) {
-            throw new InstituteNotFoundException(id.toString());
-        }
+    public void delete(Short id, Long version) {
+        Institute institute = instituteRepository.findById(id)
+                .orElseThrow(() -> new InstituteNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(institute,
+                () -> version,
+                InstituteVersionConflictException.class);
         instituteRepository.deleteById(id);
         deletionService.create(INSTITUTE, id.longValue());
     }

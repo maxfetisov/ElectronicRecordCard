@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -81,8 +82,9 @@ public class GroupController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<GroupDto> delete(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(groupService.delete(id));
+    public ResponseEntity<GroupDto> delete(@PathVariable("id") Integer id,
+                                           @RequestParam(value = "version", defaultValue = "1") Long version) {
+        return ResponseEntity.ok(groupService.delete(id, version));
     }
 
 }

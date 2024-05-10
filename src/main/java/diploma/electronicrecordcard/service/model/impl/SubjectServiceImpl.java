@@ -71,10 +71,10 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        if(!subjectRepository.existsById(id)) {
-            throw new SubjectNotFoundException(id.toString());
-        }
+    public void delete(Long id, Long version) {
+        Subject subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new SubjectNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(subject, () -> version, SubjectVersionConflictException.class);
         subjectRepository.deleteById(id);
         deletionService.create(SUBJECT, id);
     }

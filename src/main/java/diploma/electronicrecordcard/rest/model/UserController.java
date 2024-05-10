@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -95,8 +96,9 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<UserDto> update(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.delete(id));
+    public ResponseEntity<UserDto> update(@PathVariable("id") Long id,
+                                          @RequestParam(value = "version", defaultValue = "1") Long version) {
+        return ResponseEntity.ok(userService.delete(id, version));
     }
 
 

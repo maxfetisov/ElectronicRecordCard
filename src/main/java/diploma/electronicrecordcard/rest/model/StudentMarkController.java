@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -75,8 +76,9 @@ public class StudentMarkController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        studentMarkService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id,
+                                       @RequestParam(value = "version", defaultValue = "1") Long version) {
+        studentMarkService.delete(id, version);
         return ResponseEntity.noContent().build();
     }
 

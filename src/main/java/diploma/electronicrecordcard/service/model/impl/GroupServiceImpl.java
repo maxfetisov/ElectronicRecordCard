@@ -97,9 +97,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public GroupDto delete(Integer id) {
+    public GroupDto delete(Integer id, Long version) {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new GroupNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(group, () -> version, GroupVersionConflictException.class);
         group.setDeleted(true);
         group.setVersion(groupRepository.getNextVersion());
         return groupMapper.toDto(groupRepository.save(group));

@@ -75,10 +75,12 @@ public class StudentMarkServiceImpl implements StudentMarkService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        if(!studentMarkRepository.existsById(id)) {
-            throw new StudentMarkNotFoundException(id.toString());
-        }
+    public void delete(Long id, Long version) {
+        StudentMark studentMark = studentMarkRepository.findById(id)
+                .orElseThrow(() -> new StudentMarkNotFoundException(id.toString()));
+        VersionUtil.checkVersionAndThrowVersionConflict(studentMark,
+                () -> version,
+                StudentMarkVersionConflictException.class);
         studentMarkRepository.deleteById(id);
         deletionService.create(STUDENT_MARK, id);
     }
