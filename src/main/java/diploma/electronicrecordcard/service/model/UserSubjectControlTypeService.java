@@ -2,11 +2,11 @@ package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
-import diploma.electronicrecordcard.service.criteria.CriteriaService;
+import diploma.electronicrecordcard.service.criteria.CriteriaAndVersionService;
 
 import java.util.List;
 
-public interface UserSubjectControlTypeService extends CriteriaService<UserSubjectControlTypeDto> {
+public interface UserSubjectControlTypeService extends CriteriaAndVersionService<UserSubjectControlTypeDto> {
 
     List<UserSubjectControlTypeDto> getAll();
 

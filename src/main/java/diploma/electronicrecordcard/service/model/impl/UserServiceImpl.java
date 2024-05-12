@@ -5,10 +5,13 @@ import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.UserUpdateRequestDto;
 import diploma.electronicrecordcard.data.entity.Role;
 import diploma.electronicrecordcard.data.entity.User;
+import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entityalreadyexists.UserAlreadyExistsException;
 import diploma.electronicrecordcard.exception.entitynotfound.UserNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.UserVersionConflictException;
 import diploma.electronicrecordcard.repository.model.UserRepository;
+import diploma.electronicrecordcard.service.account.AuthorityService;
+import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -16,7 +19,6 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,27 +39,30 @@ public class UserServiceImpl implements UserService {
 
     Mapper<RoleDto, Role> roleMapper;
 
+    AuthorityService authorityService;
+
+    CriteriaService<User> userCriteriaService;
+
     @Override
     public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .toList();
+        return getByCriteria(Map.of());
     }
 
     @Override
     public UserDto getById(Long id) {
-        return userMapper.toDto(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString())));
+        return getByCriteria(Map.of("id", id)).stream().findFirst()
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     @Override
     public UserDto getByLogin(String login) {
-        return userMapper.toDto(userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException("login", login)));
+        return getByCriteria(Map.of("login", login)).stream().findFirst()
+                .orElseThrow(() -> new UserNotFoundException("login", login));
     }
 
     @Override
     public List<RoleDto> getUserRoles(Long id) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         return userRepository.findRolesByUserId(id).stream()
                 .map(roleMapper::toDto)
                 .toList();
@@ -67,6 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto create(UserDto userDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         if (userRepository.existsByLogin(userDto.login())) {
             throw new UserAlreadyExistsException(userDto.login());
         }
@@ -78,6 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto update(UserUpdateRequestDto userDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         User user = userRepository.findById(userDto.id())
                 .orElseThrow(() -> new UserNotFoundException(userDto.id().toString()));
         if (!user.getLogin().equals(userDto.login()) && userRepository.existsByLogin(userDto.login())) {
@@ -106,6 +112,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto delete(Long id, Long version) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(user, () -> version, UserVersionConflictException.class);
@@ -122,21 +129,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getByCriteria(Map<String, Object> criteria) {
-        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+        return userCriteriaService.getByCriteria(EntitySpecifications.<User>getSpecification(criteria)
+                .orElse(null)).stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 
     @Override
     public List<UserDto> getByCriteria(Map<String, Object> criteria, Long version) {
         var specification = EntitySpecifications.<User>getSpecification(criteria);
         var versionSpecification = VersionUtil.<User>getVersionSpecification(version);
-        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
-                .orElse(versionSpecification)));
-    }
-
-    private List<UserDto> getByCriteria(Optional<Specification<User>> specification) {
-        return specification.map(userRepository::findAll)
-                .orElse(userRepository.findAll())
-                .stream()
+        return userCriteriaService.getByCriteria(specification.map((spec)
+                -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(userMapper::toDto)
                 .toList();
     }

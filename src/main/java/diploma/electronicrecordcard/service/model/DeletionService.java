@@ -2,11 +2,11 @@ package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.DeletionDto;
 import diploma.electronicrecordcard.data.enumeration.EntityType;
-import diploma.electronicrecordcard.service.criteria.CriteriaService;
+import diploma.electronicrecordcard.service.criteria.CriteriaAndVersionService;
 
 import java.util.List;
 
-public interface DeletionService extends CriteriaService<DeletionDto> {
+public interface DeletionService extends CriteriaAndVersionService<DeletionDto> {
 
     List<DeletionDto> getAll();
 

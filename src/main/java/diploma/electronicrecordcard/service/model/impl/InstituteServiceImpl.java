@@ -8,6 +8,7 @@ import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundEx
 import diploma.electronicrecordcard.exception.versionconflict.InstituteVersionConflictException;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
+import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.InstituteService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
@@ -16,14 +17,12 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.INSTITUTE;
 
@@ -40,17 +39,17 @@ public class InstituteServiceImpl implements InstituteService {
 
     AuthorityService authorityService;
 
+    CriteriaService<Institute> instituteCriteriaService;
+
     @Override
     public List<InstituteDto> findAll() {
-        return instituteRepository.findAll().stream()
-                .map(instituteMapper::toDto)
-                .toList();
+        return getByCriteria(Map.of());
     }
 
     @Override
     public InstituteDto findById(Short id) {
-        return instituteMapper.toDto(instituteRepository.findById(id)
-                .orElseThrow(() -> new InstituteNotFoundException(id.toString())));
+        return getByCriteria(Map.of("id", id)).stream().findFirst()
+                .orElseThrow(() -> new InstituteNotFoundException(id.toString()));
     }
 
     @Override
@@ -93,22 +92,20 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public List<InstituteDto> getByCriteria(Map<String, Object> criteria) {
-        return getByCriteria(EntitySpecifications.getSpecification(criteria));
+        return instituteCriteriaService.getByCriteria(EntitySpecifications.<Institute>getSpecification(criteria)
+                .orElse(null)).stream()
+                .map(instituteMapper::toDto)
+                .toList();
     }
 
     @Override
     public List<InstituteDto> getByCriteria(Map<String, Object> criteria, Long version) {
         var specification = EntitySpecifications.<Institute>getSpecification(criteria);
         var versionSpecification = VersionUtil.<Institute>getVersionSpecification(version);
-        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
-                .orElse(versionSpecification)));
-    }
-
-    private List<InstituteDto> getByCriteria(Optional<Specification<Institute>> specification) {
-        return specification.map(instituteRepository::findAll)
-                .orElse(instituteRepository.findAll())
-                .stream()
+        return instituteCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(instituteMapper::toDto)
                 .toList();
     }
+
 }

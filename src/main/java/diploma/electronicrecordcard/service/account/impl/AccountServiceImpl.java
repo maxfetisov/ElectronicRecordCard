@@ -5,15 +5,16 @@ import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.response.AuthenticationResponseDto;
 import diploma.electronicrecordcard.data.entity.User;
+import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.AccountService;
 import diploma.electronicrecordcard.service.account.JwtService;
 import diploma.electronicrecordcard.service.model.UserService;
-import diploma.electronicrecordcard.service.mapper.Mapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,11 @@ public class AccountServiceImpl implements AccountService {
 
     UserService userService;
 
+    UserRepository userRepository;
+
     AuthenticationManager authenticationManager;
 
     JwtService jwtService;
-
-    Mapper<UserDto, User> userMapper;
 
     @Override
     public UserDto registerUser(UserCreateRequestDto registerRequest) {
@@ -55,9 +56,10 @@ public class AccountServiceImpl implements AccountService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.login(), authenticationRequest.password())
         );
-        UserDto user = userService.getByLogin(authenticationRequest.login());
+        User user = userRepository.findByLoginWithRoles(authenticationRequest.login())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return AuthenticationResponseDto.builder()
-                .token(jwtService.generateToken(userMapper.toEntity(user)))
+                .token(jwtService.generateToken(user))
                 .build();
     }
 

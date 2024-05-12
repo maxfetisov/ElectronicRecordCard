@@ -3,9 +3,12 @@ package diploma.electronicrecordcard.service.model.impl;
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
 import diploma.electronicrecordcard.data.entity.UserSubjectControlType;
+import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entitynotfound.UserSubjectControlTypeNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.UserSubjectControlTypeVersionConflictException;
 import diploma.electronicrecordcard.repository.model.UserSubjectControlTypeRepository;
+import diploma.electronicrecordcard.service.account.AuthorityService;
+import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.UserSubjectControlTypeService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
@@ -39,15 +42,18 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
 
     DeletionService deletionService;
 
+    AuthorityService authorityService;
+
+    CriteriaService<UserSubjectControlType> userSubjectControlTypeCriteriaService;
+
     @Override
     public List<UserSubjectControlTypeDto> getAll() {
-        return userSubjectControlTypeRepository.findAll().stream()
-                .map(userSubjectControlTypeMapper::toDto)
-                .toList();
+        return getByCriteria(Map.of());
     }
 
     @Override
     public List<UserSubjectControlTypeDto> getByCriteria(UserSubjectControlTypeDto criteria) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         List<Specification<UserSubjectControlType>> specs = new ArrayList<>();
 
         if (nonNull(criteria.id())) {
@@ -81,21 +87,9 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
-    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version) {
-        var specification = EntitySpecifications.<UserSubjectControlType>getSpecification(criteria);
-        var versionSpecification = VersionUtil.<UserSubjectControlType>getVersionSpecification(version);
-        return getByCriteria(Optional.of(specification.map((spec) -> spec.and(versionSpecification))
-                .orElse(versionSpecification)));
-    }
-
-    @Override
-    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
-        return getByCriteria(EntitySpecifications.getSpecification(criteria));
-    }
-
-    @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserSubjectControlTypeDto create(UserSubjectControlTypeCreateRequestDto userSubjectControlTypeDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         return userSubjectControlTypeMapper.toDto(userSubjectControlTypeRepository.save(
                 userSubjectControlTypeMapper.toEntity(
                         UserSubjectControlTypeDto.builder()
@@ -113,6 +107,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserSubjectControlTypeDto update(UserSubjectControlTypeDto userSubjectControlTypeDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         UserSubjectControlType userSubjectControlType = userSubjectControlTypeRepository
                 .findById(userSubjectControlTypeDto.id())
                 .orElseThrow(()
@@ -130,6 +125,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     @Override
     @Transactional
     public void delete(Long id, Long version) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         UserSubjectControlType userSubjectControlType = userSubjectControlTypeRepository.findById(id)
                 .orElseThrow(() -> new UserSubjectControlTypeNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(userSubjectControlType,
@@ -140,13 +136,23 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
 
     }
 
-    private List<UserSubjectControlTypeDto> getByCriteria(
-            Optional<Specification<UserSubjectControlType>> specification
-    ) {
-        return specification.map(userSubjectControlTypeRepository::findAll)
-                .orElse(userSubjectControlTypeRepository.findAll())
-                .stream()
+    @Override
+    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
+        return userSubjectControlTypeCriteriaService.getByCriteria(EntitySpecifications
+                        .<UserSubjectControlType>getSpecification(criteria)
+                .orElse(null)).stream()
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version) {
+        var specification = EntitySpecifications.<UserSubjectControlType>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<UserSubjectControlType>getVersionSpecification(version);
+        return userSubjectControlTypeCriteriaService.getByCriteria(specification.map((spec)
+                -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
+                .map(userSubjectControlTypeMapper::toDto)
+                .toList();
+    }
+
 }

@@ -43,7 +43,6 @@ public record UserUpdateRequestDto(
 
         Integer groupId,
 
-        @NotNull
         Short instituteId,
 
         List<Short> roles,

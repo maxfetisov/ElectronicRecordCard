@@ -1,12 +1,11 @@
 package diploma.electronicrecordcard.service.criteria;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import java.util.List;
-import java.util.Map;
 
 public interface CriteriaService<T> {
 
-    List<T> getByCriteria(Map<String, Object> criteria);
-
-    List<T> getByCriteria(Map<String, Object> criteria, Long version);
+    List<T> getByCriteria(Specification<T> specification);
 
 }
