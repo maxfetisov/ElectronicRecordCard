@@ -1,10 +1,8 @@
 package diploma.electronicrecordcard.config;
 
-import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.entity.User;
+import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.JwtService;
-import diploma.electronicrecordcard.service.model.UserService;
-import diploma.electronicrecordcard.service.mapper.Mapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,9 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     JwtService jwtService;
 
-    UserService userService;
-
-    Mapper<UserDto, User> userMapper;
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -46,7 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt = authorizationHeader.substring(7);
         final String userLogin = jwtService.extractLogin(jwt);
         if (userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userMapper.toEntity(userService.getByLogin(userLogin));
+            User user = userRepository.findByLoginWithRoles(userLogin)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
             if (jwtService.isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         user,
