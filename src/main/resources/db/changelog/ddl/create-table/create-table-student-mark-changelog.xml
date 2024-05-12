@@ -21,6 +21,7 @@
                         foreignKeyName="fk_student_mark_user_subject_control_type"
                         references="user_subject_control_type(id)"
                         nullable="false"
+                        unique="true"
                 />
             </column>
             <column name="completion_date" type="date">
