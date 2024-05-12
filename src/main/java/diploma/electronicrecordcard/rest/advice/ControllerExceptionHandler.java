@@ -4,6 +4,7 @@ import diploma.electronicrecordcard.data.dto.error.ErrorMessageDto;
 import diploma.electronicrecordcard.data.enumeration.ErrorType;
 import diploma.electronicrecordcard.exception.entityalreadyexists.EntityAlreadyExistsException;
 import diploma.electronicrecordcard.exception.entitynotfound.EntityNotFoundException;
+import diploma.electronicrecordcard.exception.noauthority.NoAuthorityException;
 import diploma.electronicrecordcard.exception.versionconflict.VersionConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,16 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(ErrorMessageDto.builder()
                         .type(ErrorType.VERSION_CONFLICT)
+                        .message(e.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(NoAuthorityException.class)
+    public ResponseEntity<ErrorMessageDto> handleNoAuthorityException(NoAuthorityException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ErrorMessageDto.builder()
+                        .type(ErrorType.NO_AUTHORITY)
                         .message(e.getMessage())
                         .build());
     }

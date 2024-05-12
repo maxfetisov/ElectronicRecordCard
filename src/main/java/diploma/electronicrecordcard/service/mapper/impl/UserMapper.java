@@ -27,7 +27,7 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .phoneNumber(user.getPhoneNumber())
                 .recordBookNumber(user.getRecordBookNumber())
                 .groupId(nonNull(user.getGroup()) ? user.getGroup().getId() : null)
-                .instituteId(user.getInstitute().getId())
+                .instituteId(nonNull(user.getInstitute()) ? user.getInstitute().getId() : null)
                 .roles(user.getRoles().stream().map(Role::getId).toList())
                 .version(user.getVersion())
                 .build();
@@ -47,7 +47,9 @@ public class UserMapper implements Mapper<UserDto, User> {
                 .phoneNumber(userDto.phoneNumber())
                 .recordBookNumber(userDto.recordBookNumber())
                 .group(nonNull(userDto.groupId()) ? Group.builder().id(userDto.groupId()).build() : null)
-                .institute(Institute.builder().id(userDto.instituteId()).build())
+                .institute(nonNull(userDto.instituteId())
+                        ? Institute.builder().id(userDto.instituteId()).build()
+                        : null)
                 .roles(userDto.roles().stream().map(role -> Role.builder().id(role).build()).toList())
                 .version(userDto.getVersion())
                 .build();

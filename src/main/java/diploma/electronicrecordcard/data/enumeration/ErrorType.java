@@ -3,5 +3,6 @@ package diploma.electronicrecordcard.data.enumeration;
 public enum ErrorType {
     ENTITY_NOT_FOUND,
     ENTITY_ALREADY_EXISTS,
-    VERSION_CONFLICT
+    VERSION_CONFLICT,
+    NO_AUTHORITY
 }

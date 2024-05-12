@@ -3,9 +3,11 @@ package diploma.electronicrecordcard.service.model.impl;
 import diploma.electronicrecordcard.data.dto.model.InstituteDto;
 import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
 import diploma.electronicrecordcard.data.entity.Institute;
+import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.InstituteVersionConflictException;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
+import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.InstituteService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
@@ -36,6 +38,8 @@ public class InstituteServiceImpl implements InstituteService {
 
     DeletionService deletionService;
 
+    AuthorityService authorityService;
+
     @Override
     public List<InstituteDto> findAll() {
         return instituteRepository.findAll().stream()
@@ -52,6 +56,7 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public InstituteDto create(InstituteCreateRequestDto instituteDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         return instituteMapper.toDto(instituteRepository.save(instituteMapper.toEntity(InstituteDto.builder()
                 .name(instituteDto.name())
                 .fullName(instituteDto.fullName())
@@ -62,6 +67,7 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public InstituteDto update(InstituteDto instituteDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         Institute institute = instituteRepository.findById(instituteDto.id())
                 .orElseThrow(() -> new InstituteNotFoundException(instituteDto.id().toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(institute,
@@ -75,6 +81,7 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     @Transactional
     public void delete(Short id, Long version) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         Institute institute = instituteRepository.findById(id)
                 .orElseThrow(() -> new InstituteNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(institute,

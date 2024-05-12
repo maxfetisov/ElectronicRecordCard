@@ -12,10 +12,6 @@ public interface UserService extends UserDetailsService, CriteriaService<UserDto
 
     List<UserDto> getAll();
 
-    List<UserDto> getTeachers();
-
-    List<UserDto> getStudents();
-
     UserDto getById(Long id);
 
     UserDto getByLogin(String login);

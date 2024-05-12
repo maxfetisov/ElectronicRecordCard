@@ -46,16 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getTeachers() {
-        return List.of();
-    }
-
-    @Override
-    public List<UserDto> getStudents() {
-        return List.of();
-    }
-
-    @Override
     public UserDto getById(Long id) {
         return userMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString())));
