@@ -17,3 +17,7 @@ cors:
   origins: "*"
   methods: "*"
   headers: "*"
+
+admin:
+  login: "admin"
+  password: "admin"
