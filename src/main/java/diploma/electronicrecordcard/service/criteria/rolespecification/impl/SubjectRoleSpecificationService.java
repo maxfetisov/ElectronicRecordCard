@@ -14,13 +14,25 @@ public class SubjectRoleSpecificationService implements RoleSpecificationService
     @Override
     public Specification<Subject> getSpecificationByRole(UserDto user, RoleName roleName) {
         return switch (roleName) {
-            case STUDENT -> EntitySpecifications.getSpecification(
-                    "userSubjectControlTypes.student.id",
-                    user.id()
-            );
-            case TEACHER -> EntitySpecifications.getSpecification(
-                    "userSubjectControlTypes.teacher.id",
-                    user.id()
+            case STUDENT -> EntitySpecifications.<Subject>getSpecification(
+                            "userSubjectControlTypes.student.id",
+                            user.id()
+                    )
+                    .and(EntitySpecifications.getSpecification(
+                            "deleted",
+                            false
+                    ));
+            case TEACHER -> EntitySpecifications.<Subject>getSpecification(
+                            "userSubjectControlTypes.teacher.id",
+                            user.id()
+                    )
+                    .and(EntitySpecifications.getSpecification(
+                            "deleted",
+                            false
+                    ));
+            case DEAN_OFFICE_EMPLOYEE -> EntitySpecifications.getSpecification(
+                    "deleted",
+                    false
             );
             default -> null;
         };

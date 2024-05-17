@@ -58,6 +58,7 @@ public class SubjectServiceImpl implements SubjectService {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         return subjectMapper.toDto(subjectRepository.save(subjectMapper.toEntity(SubjectDto.builder()
                 .name(subjectDto.name())
+                .deleted(false)
                 .version(subjectRepository.getNextVersion())
                 .build())));
     }
@@ -75,14 +76,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @Transactional
-    public void delete(Long id, Long version) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public SubjectDto delete(Long id, Long version) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new SubjectNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(subject, () -> version, SubjectVersionConflictException.class);
-        subjectRepository.deleteById(id);
+        subject.setDeleted(true);
+        subject.setVersion(subjectRepository.getNextVersion());
         deletionService.create(SUBJECT, id);
+        return subjectMapper.toDto(subjectRepository.save(subject));
+
     }
 
     @Override

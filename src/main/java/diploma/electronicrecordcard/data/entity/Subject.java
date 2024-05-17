@@ -37,6 +37,9 @@ public class Subject implements Versionable {
     @Column(name = "name")
     String name;
 
+    @Column(name = "deleted")
+    Boolean deleted;
+
     @Column(name = "version")
     Long version;
 

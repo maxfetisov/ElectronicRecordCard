@@ -17,6 +17,8 @@ public record SubjectDto(
         @Length(max = 50)
         String name,
 
+        Boolean deleted,
+
         @NotNull
         @Getter
         Long version

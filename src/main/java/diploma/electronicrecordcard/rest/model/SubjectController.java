@@ -76,10 +76,9 @@ public class SubjectController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id,
+    public ResponseEntity<SubjectDto> delete(@PathVariable("id") Long id,
                                        @RequestParam(value = "version", defaultValue = "1") Long version) {
-        subjectService.delete(id, version);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(subjectService.delete(id, version));
     }
 
 }

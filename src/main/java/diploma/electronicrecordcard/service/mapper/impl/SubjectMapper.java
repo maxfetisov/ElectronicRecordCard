@@ -14,6 +14,7 @@ public class SubjectMapper implements Mapper<SubjectDto, Subject> {
                 .id(subject.getId())
                 .name(subject.getName())
                 .version(subject.getVersion())
+                .deleted(subject.getDeleted())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class SubjectMapper implements Mapper<SubjectDto, Subject> {
                 .id(subjectDto.id())
                 .name(subjectDto.name())
                 .version(subjectDto.getVersion())
+                .deleted(subjectDto.deleted())
                 .build();
     }
 

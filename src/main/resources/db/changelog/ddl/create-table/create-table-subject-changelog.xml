@@ -12,6 +12,9 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="version" type="bigint">
                 <constraints nullable="false"/>
             </column>
