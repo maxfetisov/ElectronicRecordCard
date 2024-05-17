@@ -45,5 +45,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addUniqueConstraint
+                tableName="user_subject_control_type"
+                columnNames="student_id, teacher_id, subject_id"
+        />
     </changeSet>
 </databaseChangeLog>
