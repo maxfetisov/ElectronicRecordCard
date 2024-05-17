@@ -21,3 +21,6 @@ cors:
 admin:
   login: "admin"
   password: "admin"
+
+export:
+  date-format: "dd.MM.yyyy"
