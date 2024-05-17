@@ -7,13 +7,16 @@ import lombok.Getter;
 @Getter
 public enum MarkName {
 
-    NON_ADMISSION("Недопуск", (short) 1),
-    FAIL("Незачет", (short) 2),
-    SUCCESS("Зачет", (short) 5),
+    NON_ADMISSION("Недопуск", (short) 0),
+    FAILED("Незачет", (short) 2),
+    PASSED("Зачет", (short) 5),
     UNSATISFACTORY("Неудовлетворительно", (short) 2),
     SATISFACTORY("Удовлетворительно", (short) 3),
-    WELL("Хорошо", (short) 4),
-    GREAT("Отлично", (short) 5);
+    GOOD("Хорошо", (short) 4),
+    EXCELLENT("Отлично", (short) 5),
+    ABSENCE("Неявка", (short) 2),
+    REASONABLE_ABSENCE("Неявка по уважительной причине", (short) 1),
+    RELEASE("Освобождение", (short) 5);
 
     private final String title;
 

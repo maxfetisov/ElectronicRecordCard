@@ -5,6 +5,6 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="040520241650" author="fetisov">
-        <createSequence sequenceName="control_type_version_sequence" startValue="9" incrementBy="1"/>
+        <createSequence sequenceName="control_type_version_sequence" startValue="6" incrementBy="1"/>
     </changeSet>
 </databaseChangeLog>

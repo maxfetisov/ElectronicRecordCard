@@ -18,6 +18,18 @@
             <column name="control_type_id" value="1"/>
         </insert>
         <insert tableName="mark_control_type">
+            <column name="mark_id" value="8"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="9"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="10"/>
+            <column name="control_type_id" value="1"/>
+        </insert>
+        <insert tableName="mark_control_type">
             <column name="mark_id" value="1"/>
             <column name="control_type_id" value="2"/>
         </insert>
@@ -38,6 +50,18 @@
             <column name="control_type_id" value="2"/>
         </insert>
         <insert tableName="mark_control_type">
+            <column name="mark_id" value="8"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="9"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="10"/>
+            <column name="control_type_id" value="2"/>
+        </insert>
+        <insert tableName="mark_control_type">
             <column name="mark_id" value="1"/>
             <column name="control_type_id" value="3"/>
         </insert>
@@ -58,11 +82,47 @@
             <column name="control_type_id" value="3"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="2"/>
+            <column name="mark_id" value="8"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="9"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="10"/>
+            <column name="control_type_id" value="3"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="1"/>
             <column name="control_type_id" value="4"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="3"/>
+            <column name="mark_id" value="4"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="5"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="6"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="7"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="8"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="9"/>
+            <column name="control_type_id" value="4"/>
+        </insert>
+        <insert tableName="mark_control_type">
+            <column name="mark_id" value="10"/>
             <column name="control_type_id" value="4"/>
         </insert>
         <insert tableName="mark_control_type">
@@ -70,72 +130,32 @@
             <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="2"/>
+            <column name="mark_id" value="4"/>
             <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="3"/>
+            <column name="mark_id" value="5"/>
             <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="1"/>
-            <column name="control_type_id" value="6"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="4"/>
-            <column name="control_type_id" value="6"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="5"/>
-            <column name="control_type_id" value="6"/>
-        </insert>
-        <insert tableName="mark_control_type">
             <column name="mark_id" value="6"/>
-            <column name="control_type_id" value="6"/>
+            <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
             <column name="mark_id" value="7"/>
-            <column name="control_type_id" value="6"/>
+            <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="1"/>
-            <column name="control_type_id" value="7"/>
+            <column name="mark_id" value="8"/>
+            <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="4"/>
-            <column name="control_type_id" value="7"/>
+            <column name="mark_id" value="9"/>
+            <column name="control_type_id" value="5"/>
         </insert>
         <insert tableName="mark_control_type">
-            <column name="mark_id" value="5"/>
-            <column name="control_type_id" value="7"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="6"/>
-            <column name="control_type_id" value="7"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="7"/>
-            <column name="control_type_id" value="7"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="1"/>
-            <column name="control_type_id" value="8"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="4"/>
-            <column name="control_type_id" value="8"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="5"/>
-            <column name="control_type_id" value="8"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="6"/>
-            <column name="control_type_id" value="8"/>
-        </insert>
-        <insert tableName="mark_control_type">
-            <column name="mark_id" value="7"/>
-            <column name="control_type_id" value="8"/>
+            <column name="mark_id" value="10"/>
+            <column name="control_type_id" value="5"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

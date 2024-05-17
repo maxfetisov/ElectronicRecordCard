@@ -9,10 +9,10 @@
             <column name="id" type="smallint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(15)">
+            <column name="name" type="varchar(30)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="title" type="varchar(30)">
+            <column name="title" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="value" type="smallint">
