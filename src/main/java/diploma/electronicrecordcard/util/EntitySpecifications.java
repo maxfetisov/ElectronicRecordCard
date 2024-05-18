@@ -1,5 +1,6 @@
 package diploma.electronicrecordcard.util;
 
+import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -31,9 +32,9 @@ public final class EntitySpecifications {
             if(propertyNameParts.length == 1) {
                 return criteriaBuilder.equal(root.get(propertyNameParts[0]), value);
             }
-            var join = root.join(propertyNameParts[0]);
+            var join = root.join(propertyNameParts[0], JoinType.LEFT);
             for(int i = 1; i < propertyNameParts.length - 1; i++) {
-                join = join.join(propertyNameParts[i]);
+                join = join.join(propertyNameParts[i], JoinType.LEFT);
             }
             return criteriaBuilder.equal(join.get(propertyNameParts[propertyNameParts.length - 1]), value);
         };

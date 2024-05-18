@@ -42,7 +42,6 @@ public record UserCreateRequestDto (
 
         Integer groupId,
 
-        @NotNull
         Short instituteId,
 
         List<Short> roles
