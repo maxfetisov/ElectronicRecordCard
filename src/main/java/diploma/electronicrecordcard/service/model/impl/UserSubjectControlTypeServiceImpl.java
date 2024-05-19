@@ -1,6 +1,8 @@
 package diploma.electronicrecordcard.service.model.impl;
 
+import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
+import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequest;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
 import diploma.electronicrecordcard.data.entity.UserSubjectControlType;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
@@ -10,6 +12,7 @@ import diploma.electronicrecordcard.repository.model.UserSubjectControlTypeRepos
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.DeletionService;
+import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.model.UserSubjectControlTypeService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -43,6 +46,8 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     DeletionService deletionService;
 
     AuthorityService authorityService;
+
+    UserService userService;
 
     CriteriaService<UserSubjectControlType> userSubjectControlTypeCriteriaService;
 
@@ -105,6 +110,28 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
+    public List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequest userSubjectControlTypeDto) {
+        authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
+        List<UserDto> users = userService.getByCriteria(Map.of("group.id", userSubjectControlTypeDto.groupId()));
+        List<UserSubjectControlTypeDto> userSubjectControlTypes = new ArrayList<>();
+        for (var user : users) {
+            userSubjectControlTypes.add(UserSubjectControlTypeDto.builder()
+                    .subjectId(userSubjectControlTypeDto.subjectId())
+                    .teacherId(userSubjectControlTypeDto.teacherId())
+                    .controlTypeId(userSubjectControlTypeDto.controlTypeId())
+                    .hoursNumber(userSubjectControlTypeDto.hoursNumber())
+                    .semester(userSubjectControlTypeDto.semester())
+                    .studentId(user.id())
+                    .build());
+        }
+        return userSubjectControlTypeRepository.saveAll(userSubjectControlTypes.stream()
+                .map(userSubjectControlTypeMapper::toEntity)
+                .toList()).stream()
+                .map(userSubjectControlTypeMapper::toDto)
+                .toList();
+    }
+
+    @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserSubjectControlTypeDto update(UserSubjectControlTypeDto userSubjectControlTypeDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
@@ -140,7 +167,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     public List<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria) {
         return userSubjectControlTypeCriteriaService.getByCriteria(EntitySpecifications
                         .<UserSubjectControlType>getSpecification(criteria)
-                .orElse(null)).stream()
+                        .orElse(null)).stream()
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
     }
@@ -150,7 +177,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
         var specification = EntitySpecifications.<UserSubjectControlType>getSpecification(criteria);
         var versionSpecification = VersionUtil.<UserSubjectControlType>getVersionSpecification(version);
         return userSubjectControlTypeCriteriaService.getByCriteria(specification.map((spec)
-                -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
+                        -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
     }

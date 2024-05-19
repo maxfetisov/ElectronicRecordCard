@@ -1,6 +1,7 @@
 package diploma.electronicrecordcard.rest.model;
 
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
+import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequest;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
 import diploma.electronicrecordcard.service.model.UserSubjectControlTypeService;
 import diploma.electronicrecordcard.service.version.impl.UserSubjectControlTypeVersionService;
@@ -67,6 +68,13 @@ public class UserSubjectControlTypeController {
     @PostMapping
     public ResponseEntity<UserSubjectControlTypeDto> create(
             @RequestBody UserSubjectControlTypeCreateRequestDto request
+    ) {
+        return ResponseEntity.ok(userSubjectControlTypeService.create(request));
+    }
+
+    @PostMapping("by-group")
+    public ResponseEntity<List<UserSubjectControlTypeDto>> createByGroup(
+            @RequestBody UserSubjectControlTypeCreateByGroupRequest request
     ) {
         return ResponseEntity.ok(userSubjectControlTypeService.create(request));
     }
