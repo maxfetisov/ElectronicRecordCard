@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.STUDENT_MARK;
@@ -90,6 +91,7 @@ public class StudentMarkServiceImpl implements StudentMarkService {
     }
 
     @Override
+    @Transactional
     public List<StudentMarkDto> createOrUpdate(List<StudentMarkDto> studentMarks) {
         authorityService.checkRolesAndThrow(List.of(
                 RoleName.TEACHER,
@@ -99,18 +101,21 @@ public class StudentMarkServiceImpl implements StudentMarkService {
         Map<Boolean, List<StudentMarkDto>> createOrUpdateStudentMarks = studentMarks.stream()
                 .collect(Collectors.groupingBy(studentMark -> isNull(studentMark.id())));
         List<StudentMarkDto> result = new ArrayList<>(
-                createOrUpdateStudentMarks.get(true).stream()
+                Optional.ofNullable(createOrUpdateStudentMarks.get(true))
+                        .map(createRequest -> createRequest.stream()
                         .map(studentMark -> StudentMarkCreateRequestDto.builder()
                                 .userSubjectControlTypeId(studentMark.userSubjectControlTypeId())
                                 .completionDate(studentMark.completionDate())
                                 .markId(studentMark.markId())
                                 .build())
                         .map(this::create)
-                        .toList()
+                        .toList()).orElse(List.of())
         );
-        result.addAll(createOrUpdateStudentMarks.get(false).stream()
+        result.addAll(Optional.ofNullable(createOrUpdateStudentMarks.get(false))
+                .map(updateRequest -> updateRequest.stream()
                 .map(this::update)
-                .toList());
+                .toList()).orElse(List.of())
+        );
         return result;
     }
 
