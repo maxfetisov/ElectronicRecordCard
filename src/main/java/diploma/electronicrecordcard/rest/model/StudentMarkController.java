@@ -75,6 +75,11 @@ public class StudentMarkController {
         return ResponseEntity.ok(studentMarkService.update(request));
     }
 
+    @PostMapping("all")
+    public ResponseEntity<List<StudentMarkDto>> createOrUpdate(@RequestBody List<StudentMarkDto> request) {
+        return ResponseEntity.ok(studentMarkService.createOrUpdate(request));
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id,
                                        @RequestParam(value = "version", defaultValue = "1") Long version) {

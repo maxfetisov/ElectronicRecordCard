@@ -21,10 +21,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.STUDENT_MARK;
+import static java.util.Objects.isNull;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -87,6 +90,31 @@ public class StudentMarkServiceImpl implements StudentMarkService {
     }
 
     @Override
+    public List<StudentMarkDto> createOrUpdate(List<StudentMarkDto> studentMarks) {
+        authorityService.checkRolesAndThrow(List.of(
+                RoleName.TEACHER,
+                RoleName.DEAN_OFFICE_EMPLOYEE,
+                RoleName.ADMINISTRATOR
+        ));
+        Map<Boolean, List<StudentMarkDto>> createOrUpdateStudentMarks = studentMarks.stream()
+                .collect(Collectors.groupingBy(studentMark -> isNull(studentMark.id())));
+        List<StudentMarkDto> result = new ArrayList<>(
+                createOrUpdateStudentMarks.get(true).stream()
+                        .map(studentMark -> StudentMarkCreateRequestDto.builder()
+                                .userSubjectControlTypeId(studentMark.userSubjectControlTypeId())
+                                .completionDate(studentMark.completionDate())
+                                .markId(studentMark.markId())
+                                .build())
+                        .map(this::create)
+                        .toList()
+        );
+        result.addAll(createOrUpdateStudentMarks.get(false).stream()
+                .map(this::update)
+                .toList());
+        return result;
+    }
+
+    @Override
     @Transactional
     public void delete(Long id, Long version) {
         authorityService.checkRolesAndThrow(List.of(
@@ -106,7 +134,7 @@ public class StudentMarkServiceImpl implements StudentMarkService {
     @Override
     public List<StudentMarkDto> getByCriteria(Map<String, Object> criteria) {
         return studentMarkCriteriaService.getByCriteria(EntitySpecifications.<StudentMark>getSpecification(criteria)
-                .orElse(null)).stream()
+                        .orElse(null)).stream()
                 .map(studentMarkMapper::toDto)
                 .toList();
     }
@@ -116,7 +144,7 @@ public class StudentMarkServiceImpl implements StudentMarkService {
         var specification = EntitySpecifications.<StudentMark>getSpecification(criteria);
         var versionSpecification = VersionUtil.<StudentMark>getVersionSpecification(version);
         return studentMarkCriteriaService.getByCriteria(specification.map((spec) -> spec.and(versionSpecification))
-                .orElse(versionSpecification)).stream()
+                        .orElse(versionSpecification)).stream()
                 .map(studentMarkMapper::toDto)
                 .toList();
     }

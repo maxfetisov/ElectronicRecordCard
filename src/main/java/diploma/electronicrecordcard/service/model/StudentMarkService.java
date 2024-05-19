@@ -16,5 +16,7 @@ public interface StudentMarkService extends CriteriaAndVersionService<StudentMar
 
     StudentMarkDto update(StudentMarkDto studentMarkDto);
 
+    List<StudentMarkDto> createOrUpdate(List<StudentMarkDto> studentMarks);
+
     void delete(Long id, Long version);
 }
