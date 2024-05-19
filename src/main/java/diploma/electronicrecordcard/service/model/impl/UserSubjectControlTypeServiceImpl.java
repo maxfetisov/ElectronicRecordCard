@@ -2,7 +2,7 @@ package diploma.electronicrecordcard.service.model.impl;
 
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
-import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequest;
+import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
 import diploma.electronicrecordcard.data.entity.UserSubjectControlType;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.USER_SUBJECT_CONTROL_TYPE;
 import static java.util.Objects.nonNull;
@@ -110,7 +109,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     }
 
     @Override
-    public List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequest userSubjectControlTypeDto) {
+    public List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequestDto userSubjectControlTypeDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         List<UserDto> users = userService.getByCriteria(Map.of("group.id", userSubjectControlTypeDto.groupId()));
         List<UserSubjectControlTypeDto> userSubjectControlTypes = new ArrayList<>();
@@ -122,11 +121,12 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
                     .hoursNumber(userSubjectControlTypeDto.hoursNumber())
                     .semester(userSubjectControlTypeDto.semester())
                     .studentId(user.id())
+                    .version(userSubjectControlTypeRepository.getNextVersion())
                     .build());
         }
         return userSubjectControlTypeRepository.saveAll(userSubjectControlTypes.stream()
-                .map(userSubjectControlTypeMapper::toEntity)
-                .toList()).stream()
+                        .map(userSubjectControlTypeMapper::toEntity)
+                        .toList()).stream()
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
     }

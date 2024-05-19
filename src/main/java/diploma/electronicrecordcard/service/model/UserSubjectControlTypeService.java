@@ -1,7 +1,7 @@
 package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.UserSubjectControlTypeDto;
-import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequest;
+import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateByGroupRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserSubjectControlTypeCreateRequestDto;
 import diploma.electronicrecordcard.service.criteria.CriteriaAndVersionService;
 
@@ -16,7 +16,7 @@ public interface UserSubjectControlTypeService extends CriteriaAndVersionService
 
     UserSubjectControlTypeDto create(UserSubjectControlTypeCreateRequestDto userSubjectControlTypeDto);
 
-    List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequest userSubjectControlTypeDto);
+    List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequestDto userSubjectControlTypeDto);
 
     UserSubjectControlTypeDto update(UserSubjectControlTypeDto userSubjectControlTypeDto);
 
