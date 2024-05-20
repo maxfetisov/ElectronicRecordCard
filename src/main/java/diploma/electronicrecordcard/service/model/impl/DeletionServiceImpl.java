@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class DeletionServiceImpl implements DeletionService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public DeletionDto create(EntityType entityType, Long entityId) {
         return deletionMapper.toDto(deletionRepository.save(Deletion.builder()
                 .entityId(entityId)
@@ -46,7 +48,6 @@ public class DeletionServiceImpl implements DeletionService {
     }
 
     @Override
-    @Transactional
     public List<DeletionDto> getByCriteria(Map<String, Object> criteria) {
         return deletionCriteriaService.getByCriteria(EntitySpecifications.<Deletion>getSpecification(criteria)
                 .orElse(null)).stream()

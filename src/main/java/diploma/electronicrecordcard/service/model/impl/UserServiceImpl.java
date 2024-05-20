@@ -12,6 +12,7 @@ import diploma.electronicrecordcard.exception.versionconflict.UserVersionConflic
 import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.USER;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -42,6 +45,8 @@ public class UserServiceImpl implements UserService {
     AuthorityService authorityService;
 
     CriteriaService<User> userCriteriaService;
+
+    DeletionService deletionService;
 
     @Override
     public List<UserDto> getAll() {
@@ -118,6 +123,7 @@ public class UserServiceImpl implements UserService {
         VersionUtil.checkVersionAndThrowVersionConflict(user, () -> version, UserVersionConflictException.class);
         user.setDeleted(true);
         user.setVersion(userRepository.getNextVersion());
+        deletionService.create(USER, id);
         return userMapper.toDto(userRepository.save(user));
     }
 

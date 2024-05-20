@@ -13,6 +13,7 @@ import diploma.electronicrecordcard.repository.model.GroupRepository;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
+import diploma.electronicrecordcard.service.model.DeletionService;
 import diploma.electronicrecordcard.service.model.GroupService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -28,6 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static diploma.electronicrecordcard.data.enumeration.EntityType.GROUP;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -44,6 +46,8 @@ public class GroupServiceImpl implements GroupService {
     AuthorityService authorityService;
 
     CriteriaService<Group> groupCriteriaService;
+
+    DeletionService deletionService;
 
     @Override
     public List<GroupDto> getAll() {
@@ -108,6 +112,7 @@ public class GroupServiceImpl implements GroupService {
         VersionUtil.checkVersionAndThrowVersionConflict(group, () -> version, GroupVersionConflictException.class);
         group.setDeleted(true);
         group.setVersion(groupRepository.getNextVersion());
+        deletionService.create(GROUP, id.longValue());
         return groupMapper.toDto(groupRepository.save(group));
     }
 
