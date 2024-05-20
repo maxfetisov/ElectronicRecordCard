@@ -19,7 +19,6 @@ public record GroupCreateRequestDto(
 
         LocalDate admissionDate,
 
-        @NotNull
         Short instituteId
 
 ) {

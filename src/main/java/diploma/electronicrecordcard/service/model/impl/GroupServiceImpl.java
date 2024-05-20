@@ -8,6 +8,7 @@ import diploma.electronicrecordcard.data.entity.Institute;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entitynotfound.GroupNotFoundException;
 import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundException;
+import diploma.electronicrecordcard.exception.noauthority.NoAuthorityException;
 import diploma.electronicrecordcard.exception.versionconflict.GroupVersionConflictException;
 import diploma.electronicrecordcard.repository.model.GroupRepository;
 import diploma.electronicrecordcard.repository.model.InstituteRepository;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.GROUP;
 import static java.util.Objects.nonNull;
@@ -46,6 +48,8 @@ public class GroupServiceImpl implements GroupService {
     AuthorityService authorityService;
 
     CriteriaService<Group> groupCriteriaService;
+
+    CriteriaService<Institute> instituteCriteriaService;
 
     DeletionService deletionService;
 
@@ -70,17 +74,17 @@ public class GroupServiceImpl implements GroupService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public GroupDto create(GroupCreateRequestDto groupDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
-        if(!instituteRepository.existsById(groupDto.instituteId())) {
-            throw new InstituteNotFoundException(groupDto.instituteId().toString());
-        }
-        return groupMapper.toDto(groupRepository.save(groupMapper.toEntity(GroupDto.builder()
+        var currentUser = authorityService.getCurrentUser();
+        var group = GroupDto.builder()
                 .name(groupDto.name())
                 .fullName(groupDto.fullName())
                 .admissionDate(nonNull(groupDto.admissionDate()) ? groupDto.admissionDate() : LocalDate.now())
-                .instituteId(groupDto.instituteId())
+                .instituteId(nonNull(groupDto.instituteId()) ? groupDto.instituteId() : currentUser.instituteId())
                 .deleted(false)
                 .version(groupRepository.getNextVersion())
-                .build())));
+                .build();
+        checkConstraints(group);
+        return groupMapper.toDto(groupRepository.save(groupMapper.toEntity(group)));
     }
 
     @Override
@@ -89,18 +93,20 @@ public class GroupServiceImpl implements GroupService {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         Group group = groupRepository.findById(groupDto.id())
                 .orElseThrow(() -> new GroupNotFoundException(groupDto.id().toString()));
-        if(!instituteRepository.existsById(groupDto.instituteId())) {
-            throw new InstituteNotFoundException(groupDto.instituteId().toString());
-        }
         VersionUtil.checkVersionAndThrowVersionConflict(group, groupDto, GroupVersionConflictException.class);
-        group.setName(groupDto.name());
-        group.setFullName(groupDto.fullName());
-        if(nonNull(groupDto.admissionDate())) {
-            group.setAdmissionDate(groupDto.admissionDate());
-        }
-        group.setInstitute(Institute.builder().id(groupDto.instituteId()).build());
-        group.setVersion(groupRepository.getNextVersion());
-        return groupMapper.toDto(groupRepository.save(group));
+        this.checkRightsConstraint(groupMapper.toDto(group));
+        var currentUser = authorityService.getCurrentUser();
+        var updatedGroup = GroupDto.builder()
+                .id(groupDto.id())
+                .instituteId(nonNull(groupDto.instituteId()) ? groupDto.instituteId() : currentUser.instituteId())
+                .admissionDate(nonNull(groupDto.admissionDate()) ? groupDto.admissionDate() : group.getAdmissionDate())
+                .name(groupDto.name())
+                .fullName(groupDto.fullName())
+                .deleted(group.getDeleted())
+                .version(groupRepository.getNextVersion())
+                .build();
+        checkConstraints(updatedGroup);
+        return groupMapper.toDto(groupRepository.save(groupMapper.toEntity(updatedGroup)));
     }
 
     @Override
@@ -110,6 +116,7 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(id)
                 .orElseThrow(() -> new GroupNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(group, () -> version, GroupVersionConflictException.class);
+        checkRightsConstraint(groupMapper.toDto(group));
         group.setDeleted(true);
         group.setVersion(groupRepository.getNextVersion());
         deletionService.create(GROUP, id.longValue());
@@ -134,4 +141,27 @@ public class GroupServiceImpl implements GroupService {
                 .toList();
     }
 
+    private void checkConstraints(GroupDto group) {
+        checkInstituteExistenceConstraint(group);
+        checkRightsConstraint(group);
+    }
+
+    private void checkInstituteExistenceConstraint(GroupDto group) {
+        var instituteList = instituteCriteriaService.getByCriteria(EntitySpecifications
+                .<Institute>getSpecification(Map.of("id", group.instituteId()))
+                .orElse(null));
+        if(instituteList.isEmpty()) {
+            throw new InstituteNotFoundException(group.instituteId().toString());
+        }
+    }
+
+    private void checkRightsConstraint(GroupDto groupDto) {
+        if(authorityService.hasAnyAuthority(List.of(RoleName.ADMINISTRATOR))) {
+            return;
+        }
+        var currentUser = authorityService.getCurrentUser();
+        if(!Objects.equals(currentUser.instituteId(), groupDto.instituteId())) {
+            throw new NoAuthorityException();
+        }
+    }
 }

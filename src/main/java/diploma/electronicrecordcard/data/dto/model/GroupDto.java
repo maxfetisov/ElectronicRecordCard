@@ -27,7 +27,6 @@ public record GroupDto(
 
         Boolean deleted,
 
-        @NotNull
         Short instituteId,
 
         @NotNull

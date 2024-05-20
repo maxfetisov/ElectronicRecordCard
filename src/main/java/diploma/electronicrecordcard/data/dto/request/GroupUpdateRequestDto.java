@@ -25,7 +25,6 @@ public record GroupUpdateRequestDto(
 
         LocalDate admissionDate,
 
-        @NotNull
         Short instituteId,
 
         @NotNull
