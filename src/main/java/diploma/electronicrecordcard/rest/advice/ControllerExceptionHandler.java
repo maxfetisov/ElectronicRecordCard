@@ -4,6 +4,7 @@ import diploma.electronicrecordcard.data.dto.error.ErrorMessageDto;
 import diploma.electronicrecordcard.data.enumeration.ErrorType;
 import diploma.electronicrecordcard.exception.entityalreadyexists.EntityAlreadyExistsException;
 import diploma.electronicrecordcard.exception.entitynotfound.EntityNotFoundException;
+import diploma.electronicrecordcard.exception.illegalvalue.IllegalValueException;
 import diploma.electronicrecordcard.exception.noauthority.NoAuthorityException;
 import diploma.electronicrecordcard.exception.versionconflict.VersionConflictException;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,16 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .body(ErrorMessageDto.builder()
                         .type(ErrorType.NO_AUTHORITY)
+                        .message(e.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(IllegalValueException.class)
+    public ResponseEntity<ErrorMessageDto> handleIllegalValueException(IllegalValueException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorMessageDto.builder()
+                        .type(ErrorType.ILLEGAL_VALUE)
                         .message(e.getMessage())
                         .build());
     }

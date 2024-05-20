@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long>,
 
     boolean existsByLogin(String login);
 
+    Optional<User> findByRecordBookNumber(String recordBookNumber);
+
     default Long getNextVersion() {
         return getNextVersion("user_version_sequence");
     }

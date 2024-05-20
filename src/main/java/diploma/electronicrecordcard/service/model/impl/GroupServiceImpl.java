@@ -11,7 +11,6 @@ import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundEx
 import diploma.electronicrecordcard.exception.noauthority.NoAuthorityException;
 import diploma.electronicrecordcard.exception.versionconflict.GroupVersionConflictException;
 import diploma.electronicrecordcard.repository.model.GroupRepository;
-import diploma.electronicrecordcard.repository.model.InstituteRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.DeletionService;
@@ -40,8 +39,6 @@ import static java.util.Objects.nonNull;
 public class GroupServiceImpl implements GroupService {
 
     GroupRepository groupRepository;
-
-    InstituteRepository instituteRepository;
 
     Mapper<GroupDto, Group> groupMapper;
 
