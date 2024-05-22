@@ -15,11 +15,11 @@ import diploma.electronicrecordcard.exception.entitynotfound.UserNotFoundExcepti
 import diploma.electronicrecordcard.exception.illegalvalue.IllegalValueException;
 import diploma.electronicrecordcard.exception.noauthority.NoAuthorityException;
 import diploma.electronicrecordcard.exception.versionconflict.UserVersionConflictException;
-import diploma.electronicrecordcard.repository.model.RoleRepository;
 import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.model.DeletionService;
+import diploma.electronicrecordcard.service.model.RoleService;
 import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.util.EntitySpecifications;
@@ -61,7 +61,8 @@ public class UserServiceImpl implements UserService {
     CriteriaService<Institute> instituteCriteriaService;
 
     CriteriaService<Group> groupCriteriaService;
-    private final RoleRepository roleRepository;
+
+    RoleService roleService;
 
     @Override
     public List<UserDto> getAll() {
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public UserDto create(UserDto userDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
-        var roles = getRolesByIds(userDto.roles());
+        var roles = roleService.getNamesByIds(userDto.roles());
         User user = userMapper.toEntity(userDto);
         if (roles.contains(RoleName.STUDENT) && nonNull(userDto.groupId()) && isNull(userDto.instituteId())) {
             var istituteList = instituteCriteriaService.getByCriteria(EntitySpecifications
@@ -200,7 +201,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        var roles = getRolesByIds(user.roles());
+        var roles = roleService.getNamesByIds(user.roles());
         if (roles.isEmpty()) {
             throw new IllegalValueException("roles", roles.toString());
         }
@@ -250,16 +251,11 @@ public class UserServiceImpl implements UserService {
                 throw new NoAuthorityException();
             }
         }
-        var roles = getRolesByIds(user.roles());
+        var roles = roleService.getNamesByIds(user.roles());
         if (roles.contains(RoleName.DEAN_OFFICE_EMPLOYEE) || roles.contains(RoleName.ADMINISTRATOR)) {
             throw new NoAuthorityException();
         }
     }
 
-    private List<RoleName> getRolesByIds(List<Short> roleIds) {
-        return roleRepository.findAll().stream()
-                .filter(role -> roleIds.contains(role.getId()))
-                .map(role -> RoleName.valueOf(role.getName()))
-                .toList();
-    }
+
 }

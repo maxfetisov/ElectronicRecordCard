@@ -42,15 +42,7 @@ public class UserSubjectControlTypeController {
         return ResponseEntity.ok(userSubjectControlTypeVersionService.getByVersion(version));
     }
 
-    @Deprecated
     @PostMapping("filter")
-    public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteria(
-            @RequestBody UserSubjectControlTypeDto criteria
-    ) {
-        return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria));
-    }
-
-    @PostMapping("filter/v2")
     public ResponseEntity<List<UserSubjectControlTypeDto>> getByCriteria(
             @RequestBody Map<String, Object> criteria
     ) {

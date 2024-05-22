@@ -11,9 +11,6 @@ public interface UserSubjectControlTypeService extends CriteriaAndVersionService
 
     List<UserSubjectControlTypeDto> getAll();
 
-    @Deprecated
-    List<UserSubjectControlTypeDto> getByCriteria(UserSubjectControlTypeDto criteria);
-
     UserSubjectControlTypeDto create(UserSubjectControlTypeCreateRequestDto userSubjectControlTypeDto);
 
     List<UserSubjectControlTypeDto> create(UserSubjectControlTypeCreateByGroupRequestDto userSubjectControlTypeDto);

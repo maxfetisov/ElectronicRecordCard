@@ -11,4 +11,7 @@ public interface RoleService {
 
     RoleDto getByName(RoleName name);
 
+    List<RoleDto> getByIds(List<Short> ids);
+
+    List<RoleName> getNamesByIds(List<Short> ids);
 }

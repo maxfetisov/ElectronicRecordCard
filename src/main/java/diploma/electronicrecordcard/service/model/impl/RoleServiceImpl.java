@@ -37,4 +37,19 @@ public class RoleServiceImpl implements RoleService {
                 .orElseThrow(() -> new RoleNotFoundException("name", name.name()));
     }
 
+    @Override
+    public List<RoleDto> getByIds(List<Short> ids) {
+        return roleRepository.findAllByIdIn(ids).stream()
+                .map(roleMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<RoleName> getNamesByIds(List<Short> ids) {
+        return getByIds(ids).stream()
+                .map(RoleDto::name)
+                .map(RoleName::valueOf)
+                .toList();
+    }
+
 }

@@ -46,6 +46,10 @@ public class UserRoleSpecificationService implements RoleSpecificationService<Us
                             "id",
                             user.id()
                     ))
+                    .or(EntitySpecifications.getSpecification(
+                            "roles.name",
+                            RoleName.TEACHER.name()
+                    ))
                     .and(EntitySpecifications.getSpecification(
                             "deleted",
                             false
