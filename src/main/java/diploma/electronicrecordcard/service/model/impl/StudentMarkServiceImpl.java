@@ -3,14 +3,19 @@ package diploma.electronicrecordcard.service.model.impl;
 import diploma.electronicrecordcard.data.dto.model.StudentMarkDto;
 import diploma.electronicrecordcard.data.dto.request.StudentMarkCreateRequestDto;
 import diploma.electronicrecordcard.data.entity.StudentMark;
+import diploma.electronicrecordcard.data.entity.UserSubjectControlType;
+import diploma.electronicrecordcard.data.enumeration.MarkName;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
+import diploma.electronicrecordcard.exception.entitynotfound.MarkNotFoundException;
 import diploma.electronicrecordcard.exception.entitynotfound.StudentMarkNotFoundException;
+import diploma.electronicrecordcard.exception.entitynotfound.UserSubjectControlTypeNotFoundException;
 import diploma.electronicrecordcard.exception.versionconflict.StudentMarkVersionConflictException;
 import diploma.electronicrecordcard.repository.model.StudentMarkRepository;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.criteria.CriteriaService;
 import diploma.electronicrecordcard.service.mapper.Mapper;
 import diploma.electronicrecordcard.service.model.DeletionService;
+import diploma.electronicrecordcard.service.model.MarkService;
 import diploma.electronicrecordcard.service.model.StudentMarkService;
 import diploma.electronicrecordcard.util.EntitySpecifications;
 import diploma.electronicrecordcard.util.VersionUtil;
@@ -24,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,6 +51,10 @@ public class StudentMarkServiceImpl implements StudentMarkService {
 
     CriteriaService<StudentMark> studentMarkCriteriaService;
 
+    CriteriaService<UserSubjectControlType> userSubjectControlTypeCriteriaService;
+
+    MarkService markService;
+
     @Override
     public List<StudentMarkDto> getAll() {
         return getByCriteria(Map.of());
@@ -64,12 +74,14 @@ public class StudentMarkServiceImpl implements StudentMarkService {
                 RoleName.DEAN_OFFICE_EMPLOYEE,
                 RoleName.ADMINISTRATOR
         ));
-        return studentMarkMapper.toDto(studentMarkRepository.save(studentMarkMapper.toEntity(StudentMarkDto.builder()
+        var studentMark = StudentMarkDto.builder()
                 .completionDate(studentMarkDto.completionDate())
                 .markId(studentMarkDto.markId())
                 .userSubjectControlTypeId(studentMarkDto.userSubjectControlTypeId())
                 .version(studentMarkRepository.getNextVersion())
-                .build())));
+                .build();
+        checkExistenceConstraint(studentMark);
+        return studentMarkMapper.toDto(studentMarkRepository.save(studentMarkMapper.toEntity(studentMark)));
     }
 
     @Override
@@ -85,6 +97,8 @@ public class StudentMarkServiceImpl implements StudentMarkService {
         VersionUtil.checkVersionAndThrowVersionConflict(studentMark,
                 studentMarkDto,
                 StudentMarkVersionConflictException.class);
+        checkRightConstraints(studentMarkMapper.toDto(studentMark));
+        checkConstraints(studentMarkDto);
         StudentMark newStudentMark = studentMarkMapper.toEntity(studentMarkDto);
         newStudentMark.setVersion(studentMarkRepository.getNextVersion());
         return studentMarkMapper.toDto(studentMarkRepository.save(newStudentMark));
@@ -132,6 +146,7 @@ public class StudentMarkServiceImpl implements StudentMarkService {
         VersionUtil.checkVersionAndThrowVersionConflict(studentMark,
                 () -> version,
                 StudentMarkVersionConflictException.class);
+        checkRightConstraints(studentMarkMapper.toDto(studentMark));
         studentMarkRepository.deleteById(id);
         deletionService.create(STUDENT_MARK, id);
     }
@@ -152,6 +167,39 @@ public class StudentMarkServiceImpl implements StudentMarkService {
                         .orElse(versionSpecification)).stream()
                 .map(studentMarkMapper::toDto)
                 .toList();
+    }
+
+    private void checkConstraints(StudentMarkDto studentMark) {
+        checkExistenceConstraint(studentMark);
+        checkRightConstraints(studentMark);
+    }
+
+    private void checkExistenceConstraint(StudentMarkDto studentMark) {
+        var mark = markService.getById(studentMark.markId());
+        if (authorityService.hasAnyAuthority(List.of(RoleName.TEACHER))
+                && Objects.equals(mark.name(), MarkName.NON_ADMISSION.name())) {
+            throw new MarkNotFoundException(studentMark.markId().toString());
+        }
+        var userSubjectControlTypeList = userSubjectControlTypeCriteriaService.getByCriteria(EntitySpecifications
+                .getSpecification(
+                   "id",
+                   studentMark.userSubjectControlTypeId()
+                ));
+        if(userSubjectControlTypeList.isEmpty()) {
+            throw new UserSubjectControlTypeNotFoundException(studentMark.userSubjectControlTypeId().toString());
+        }
+    }
+
+    private void checkRightConstraints(StudentMarkDto studentMark) {
+        var studentMarkList = studentMarkCriteriaService.getByCriteria(EntitySpecifications
+                .getSpecification(
+                        "id",
+                        studentMark.id()
+                )
+        );
+        if(studentMarkList.isEmpty()) {
+            throw new StudentMarkNotFoundException(studentMark.id().toString());
+        }
     }
 
 }
