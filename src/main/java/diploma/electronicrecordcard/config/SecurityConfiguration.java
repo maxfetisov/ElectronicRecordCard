@@ -37,6 +37,8 @@ public class SecurityConfiguration {
 
     JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    AppEntryPoint appEntryPoint;
+
     @NonFinal
     @Value("${cors.origins}")
     String[] origins;
@@ -57,7 +59,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
+        return httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
@@ -66,8 +68,12 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/api/users/authenticate").permitAll()
-                        .anyRequest().authenticated());
-        return httpSecurity.build();
+                        .anyRequest().authenticated())
+                .exceptionHandling((exceptionHandlingConfigurer) -> {
+                   exceptionHandlingConfigurer
+                           .authenticationEntryPoint(appEntryPoint);
+                })
+                .build();
     }
 
     @Bean
