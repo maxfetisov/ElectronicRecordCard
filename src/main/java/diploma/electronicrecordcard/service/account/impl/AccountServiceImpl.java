@@ -2,11 +2,15 @@ package diploma.electronicrecordcard.service.account.impl;
 
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;
+import diploma.electronicrecordcard.data.dto.request.RefreshRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.response.AuthenticationResponseDto;
+import diploma.electronicrecordcard.data.entity.RefreshToken;
 import diploma.electronicrecordcard.data.entity.User;
+import diploma.electronicrecordcard.repository.model.RefreshTokenRepository;
 import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.AccountService;
+import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.account.JwtService;
 import diploma.electronicrecordcard.service.model.UserService;
 import lombok.AccessLevel;
@@ -17,6 +21,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -33,8 +40,13 @@ public class AccountServiceImpl implements AccountService {
 
     JwtService jwtService;
 
+    RefreshTokenRepository refreshTokenRepository;
+
+    AuthorityService authorityService;
+
     @Override
-    public UserDto registerUser(UserCreateRequestDto registerRequest) {
+    @Transactional
+    public UserDto register(UserCreateRequestDto registerRequest) {
         return userService.create(UserDto.builder()
                 .login(registerRequest.login())
                 .password(passwordEncoder.encode(registerRequest.password()))
@@ -52,14 +64,43 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest) {
+    @Transactional
+    public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.login(), authenticationRequest.password())
         );
-        User user = userRepository.findByLoginWithRoles(authenticationRequest.login())
+        var user = userRepository.findByLoginWithRoles(authenticationRequest.login())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return authenticate(user);
+    }
+
+    @Override
+    @Transactional
+    public AuthenticationResponseDto refresh(RefreshRequestDto refreshRequest) {
+        var userId = Long.parseLong(jwtService.extractRefreshUserId(refreshRequest.refreshToken()));
+        if(!refreshTokenRepository.existsByTokenAndUserId(refreshRequest.refreshToken(), userId)) {
+            throw new UsernameNotFoundException("Refresh token not found");
+        }
+        var user = userRepository.findByIdWithRoles(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return authenticate(user);
+    }
+
+    @Override
+    @Transactional
+    public void logout() {
+        Optional.ofNullable(authorityService.getCurrentUser())
+                .ifPresent(user -> refreshTokenRepository.deleteByUserId(user.id()));
+    }
+
+    private AuthenticationResponseDto authenticate(User user) {
+        refreshTokenRepository.deleteByUserId(user.getId());
         return AuthenticationResponseDto.builder()
                 .token(jwtService.generateToken(user))
+                .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
+                        .user(user)
+                        .token(jwtService.generateRefreshToken(String.valueOf(user.getId())))
+                        .build()).getToken())
                 .build();
     }
 

@@ -32,4 +32,6 @@
 
     <include file="ddl/create-table/create-table-deletion-changelog.xml" relativeToChangelogFile="true"/>
     <include file="ddl/create-sequence/create-deletion-sequence-changelog.xml" relativeToChangelogFile="true"/>
+
+    <include file="ddl/create-table/create-table-refresh-token-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

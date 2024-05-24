@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.rest.model;
 import diploma.electronicrecordcard.data.dto.model.RoleDto;
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;
+import diploma.electronicrecordcard.data.dto.request.RefreshRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserUpdateRequestDto;
 import diploma.electronicrecordcard.data.dto.response.AuthenticationResponseDto;
@@ -82,12 +83,23 @@ public class UserController {
 
     @PostMapping("register")
     public ResponseEntity<UserDto> register(@RequestBody UserCreateRequestDto request) {
-        return ResponseEntity.ok(accountService.registerUser(request));
+        return ResponseEntity.ok(accountService.register(request));
     }
 
     @PostMapping("authenticate")
     public ResponseEntity<AuthenticationResponseDto> authenticate(@RequestBody AuthenticationRequestDto request) {
-        return ResponseEntity.ok(accountService.authenticateUser(request));
+        return ResponseEntity.ok(accountService.authenticate(request));
+    }
+
+    @PostMapping("refresh")
+    public ResponseEntity<AuthenticationResponseDto> refresh(@RequestBody RefreshRequestDto request) {
+        return ResponseEntity.ok(accountService.refresh(request));
+    }
+
+    @PostMapping("logout")
+    public ResponseEntity<Void> logout() {
+        accountService.logout();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping

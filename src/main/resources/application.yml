@@ -12,6 +12,9 @@ spring:
 authorization:
   secret: "6251655468576D5A7134743777217A25432A46294A404E635266556A586E3272"
   expiration: 86400000
+  refresh:
+    secret: "Fzu8EfZP8xK5I+cGxAhDRmEHtQJLzTu7Tb+KtUcWAbQi5r7MmFk7xHK2BY7r22oX"
+    expiration: 25920000
 
 cors:
   origins: "*"
