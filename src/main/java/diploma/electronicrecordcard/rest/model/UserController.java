@@ -8,6 +8,7 @@ import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserUpdateRequestDto;
 import diploma.electronicrecordcard.data.dto.response.AuthenticationResponseDto;
 import diploma.electronicrecordcard.service.account.AccountService;
+import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.model.UserService;
 import diploma.electronicrecordcard.service.version.impl.UserVersionService;
 import lombok.AccessLevel;
@@ -39,6 +40,8 @@ public class UserController {
 
     AccountService accountService;
 
+    AuthorityService authorityService;
+
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.getAll());
@@ -64,7 +67,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getByLogin(login));
     }
 
-
+    @GetMapping("current")
+    public ResponseEntity<UserDto> getCurrent() {
+        return ResponseEntity.ok(authorityService.getCurrentUser());
+    }
 
     @PostMapping("filter")
     public ResponseEntity<List<UserDto>> getByCriteria(
