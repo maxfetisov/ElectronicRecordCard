@@ -8,6 +8,8 @@ import diploma.electronicrecordcard.service.version.impl.UserSubjectControlTypeV
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,12 @@ public class UserSubjectControlTypeController {
         return ResponseEntity.ok(userSubjectControlTypeService.getAll());
     }
 
+    @GetMapping("page")
+    public ResponseEntity<Page<UserSubjectControlTypeDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                                  @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(userSubjectControlTypeService.getAll(PageRequest.of(pageNumber, pageSize)));
+    }
+
     @GetMapping("version/{version}")
     public ResponseEntity<List<UserSubjectControlTypeDto>> getByVersion(@PathVariable("version") Long version) {
         return ResponseEntity.ok(userSubjectControlTypeVersionService.getByVersion(version));
@@ -55,6 +63,30 @@ public class UserSubjectControlTypeController {
             @PathVariable("version") Long version
     ) {
         return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(criteria, version));
+    }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<UserSubjectControlTypeDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(
+                criteria,
+                PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<UserSubjectControlTypeDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(userSubjectControlTypeService.getByCriteria(
+                criteria,
+                version,
+                PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping

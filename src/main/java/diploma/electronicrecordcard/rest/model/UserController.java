@@ -14,6 +14,8 @@ import diploma.electronicrecordcard.service.version.impl.UserVersionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +47,12 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.getAll());
+    }
+
+    @GetMapping("page")
+    public ResponseEntity<Page<UserDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(userService.getAll(PageRequest.of(pageNumber, pageSize)));
     }
 
     @GetMapping("{id}/roles")
@@ -86,6 +94,26 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.getByCriteria(criteria, version));
     }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<UserDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(userService.getByCriteria(criteria, PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<UserDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(userService.getByCriteria(criteria, version, PageRequest.of(pageNumber, pageSize)));
+    }
+
 
     @PostMapping("register")
     public ResponseEntity<UserDto> register(@RequestBody UserCreateRequestDto request) {

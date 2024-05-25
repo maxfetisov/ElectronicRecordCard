@@ -12,6 +12,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +34,12 @@ public class DeletionServiceImpl implements DeletionService {
 
     @Override
     public List<DeletionDto> getAll() {
-        return deletionRepository.findAll().stream()
-                .map(deletionMapper::toDto)
-                .toList();
+        return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<DeletionDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -63,6 +68,22 @@ public class DeletionServiceImpl implements DeletionService {
                 -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(deletionMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<DeletionDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return deletionCriteriaService.getByCriteria(EntitySpecifications.<Deletion>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(deletionMapper::toDto);
+    }
+
+    @Override
+    public Page<DeletionDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<Deletion>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Deletion>getVersionSpecification(version);
+        return deletionCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(deletionMapper::toDto);
     }
 
 }

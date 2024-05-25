@@ -22,6 +22,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,11 @@ public class StudentMarkServiceImpl implements StudentMarkService {
     @Override
     public List<StudentMarkDto> getAll() {
         return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<StudentMarkDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -167,6 +174,22 @@ public class StudentMarkServiceImpl implements StudentMarkService {
                         .orElse(versionSpecification)).stream()
                 .map(studentMarkMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<StudentMarkDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return studentMarkCriteriaService.getByCriteria(EntitySpecifications.<StudentMark>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(studentMarkMapper::toDto);
+    }
+
+    @Override
+    public Page<StudentMarkDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<StudentMark>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<StudentMark>getVersionSpecification(version);
+        return studentMarkCriteriaService.getByCriteria(specification.map((spec) -> spec.and(versionSpecification))
+                        .orElse(versionSpecification), pageable)
+                .map(studentMarkMapper::toDto);
     }
 
     private void checkConstraints(StudentMarkDto studentMark) {

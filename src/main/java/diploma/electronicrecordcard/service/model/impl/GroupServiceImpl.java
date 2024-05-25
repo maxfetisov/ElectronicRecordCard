@@ -21,6 +21,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupDto> getAll() {
         return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<GroupDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -136,6 +143,22 @@ public class GroupServiceImpl implements GroupService {
                 -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(groupMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<GroupDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return groupCriteriaService.getByCriteria(EntitySpecifications.<Group>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(groupMapper::toDto);
+    }
+
+    @Override
+    public Page<GroupDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<Group>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Group>getVersionSpecification(version);
+        return groupCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(groupMapper::toDto);
     }
 
     private void checkConstraints(GroupDto group) {

@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +41,13 @@ public class GroupController {
         return ResponseEntity.ok(groupService.getAll());
     }
 
+    @GetMapping("page")
+    public ResponseEntity<Page<GroupDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                 @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(groupService.getAll(PageRequest.of(pageNumber, pageSize)));
+    }
+
+
     @GetMapping("institute/{id}")
     public ResponseEntity<List<GroupDto>> getByInstituteId(@PathVariable("id") Short id) {
         return ResponseEntity.ok(groupService.getByInstituteId(id));
@@ -67,6 +76,25 @@ public class GroupController {
             @PathVariable("version") Long version
     ) {
         return ResponseEntity.ok(groupService.getByCriteria(criteria, version));
+    }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<GroupDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(groupService.getByCriteria(criteria, PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<GroupDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(groupService.getByCriteria(criteria, version, PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping

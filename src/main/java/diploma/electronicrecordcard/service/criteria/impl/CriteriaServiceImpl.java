@@ -8,6 +8,8 @@ import diploma.electronicrecordcard.service.criteria.rolespecification.RoleSpeci
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -33,17 +35,8 @@ public class CriteriaServiceImpl<T, ID> implements CriteriaService<T> {
     @Override
     public List<T> getByCriteria(Specification<T> specification) {
         Optional<Specification<T>> optionalSpecification = Optional.ofNullable(specification);
-        List<Specification<T>> roleSpecifications = new ArrayList<>();
 
-        UserDto user = authorityService.getCurrentUser();
-        for (RoleName roleName : RoleName.values()) {
-            if(authorityService.hasAnyAuthority(List.of(roleName))) {
-                roleSpecifications.add(roleSpecificationService.getSpecificationByRole(user, roleName));
-            }
-        }
-        Optional<Specification<T>> roleSpecification = roleSpecifications.stream()
-                .filter(Objects::nonNull)
-                .reduce(Specification::or);
+        Optional<Specification<T>> roleSpecification = getRoleSpecification();
 
         return Stream.of(optionalSpecification, roleSpecification)
                 .filter(Optional::isPresent)
@@ -53,4 +46,31 @@ public class CriteriaServiceImpl<T, ID> implements CriteriaService<T> {
                 .orElse(repository.findAll());
     }
 
+    @Override
+    public Page<T> getByCriteria(Specification<T> specification, Pageable pageable) {
+        Optional<Specification<T>> optionalSpecification = Optional.ofNullable(specification);
+
+        Optional<Specification<T>> roleSpecification = getRoleSpecification();
+
+        return Stream.of(optionalSpecification, roleSpecification)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .reduce(Specification::and)
+                .map(spec -> specificationExecutor.findAll(spec, pageable))
+                .orElse(repository.findAll(pageable));
+    }
+
+    private Optional<Specification<T>> getRoleSpecification() {
+        List<Specification<T>> roleSpecifications = new ArrayList<>();
+
+        UserDto user = authorityService.getCurrentUser();
+        for (RoleName roleName : RoleName.values()) {
+            if(authorityService.hasAnyAuthority(List.of(roleName))) {
+                roleSpecifications.add(roleSpecificationService.getSpecificationByRole(user, roleName));
+            }
+        }
+        return roleSpecifications.stream()
+                .filter(Objects::nonNull)
+                .reduce(Specification::or);
+    }
 }

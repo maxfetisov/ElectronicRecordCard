@@ -17,6 +17,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,12 +44,17 @@ public class InstituteServiceImpl implements InstituteService {
     CriteriaService<Institute> instituteCriteriaService;
 
     @Override
-    public List<InstituteDto> findAll() {
+    public List<InstituteDto> getAll() {
         return getByCriteria(Map.of());
     }
 
     @Override
-    public InstituteDto findById(Short id) {
+    public Page<InstituteDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
+    }
+
+    @Override
+    public InstituteDto getById(Short id) {
         return getByCriteria(Map.of("id", id)).stream().findFirst()
                 .orElseThrow(() -> new InstituteNotFoundException(id.toString()));
     }
@@ -106,6 +113,22 @@ public class InstituteServiceImpl implements InstituteService {
                         -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(instituteMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<InstituteDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return instituteCriteriaService.getByCriteria(EntitySpecifications.<Institute>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(instituteMapper::toDto);
+    }
+
+    @Override
+    public Page<InstituteDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<Institute>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Institute>getVersionSpecification(version);
+        return instituteCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(instituteMapper::toDto);
     }
 
 }

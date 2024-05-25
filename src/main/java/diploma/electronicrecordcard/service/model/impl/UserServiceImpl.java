@@ -27,6 +27,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -67,6 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAll() {
         return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<UserDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -173,6 +180,22 @@ public class UserServiceImpl implements UserService {
                         -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(userMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<UserDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return userCriteriaService.getByCriteria(EntitySpecifications.<User>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(userMapper::toDto);
+    }
+
+    @Override
+    public Page<UserDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<User>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<User>getVersionSpecification(version);
+        return userCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(userMapper::toDto);
     }
 
     private void checkConstraints(UserDto user) {

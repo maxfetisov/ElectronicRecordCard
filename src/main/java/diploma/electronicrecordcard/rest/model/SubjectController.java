@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +45,12 @@ public class SubjectController {
         return ResponseEntity.ok(subjectVersionService.getByVersion(version));
     }
 
+    @GetMapping("page")
+    public ResponseEntity<Page<SubjectDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                   @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(subjectService.getAll(PageRequest.of(pageNumber, pageSize)));
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<SubjectDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(subjectService.getById(id));
@@ -61,6 +69,25 @@ public class SubjectController {
             @PathVariable("version") Long version
     ) {
         return ResponseEntity.ok(subjectService.getByCriteria(criteria, version));
+    }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<SubjectDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(subjectService.getByCriteria(criteria, PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<SubjectDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(subjectService.getByCriteria(criteria, version, PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping

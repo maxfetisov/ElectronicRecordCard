@@ -17,6 +17,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,11 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<SubjectDto> getAll() {
         return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<SubjectDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -105,5 +112,21 @@ public class SubjectServiceImpl implements SubjectService {
                 -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(subjectMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<SubjectDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return subjectCriteriaService.getByCriteria(EntitySpecifications.<Subject>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(subjectMapper::toDto);
+    }
+
+    @Override
+    public Page<SubjectDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<Subject>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<Subject>getVersionSpecification(version);
+        return subjectCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(subjectMapper::toDto);
     }
 }

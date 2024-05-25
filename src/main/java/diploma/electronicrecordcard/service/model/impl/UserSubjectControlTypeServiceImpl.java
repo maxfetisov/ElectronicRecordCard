@@ -26,6 +26,8 @@ import diploma.electronicrecordcard.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import static diploma.electronicrecordcard.data.enumeration.EntityType.USER_SUBJECT_CONTROL_TYPE;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -64,6 +64,11 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
     @Override
     public List<UserSubjectControlTypeDto> getAll() {
         return getByCriteria(Map.of());
+    }
+
+    @Override
+    public Page<UserSubjectControlTypeDto> getAll(Pageable pageable) {
+        return getByCriteria(Map.of(), pageable);
     }
 
     @Override
@@ -161,6 +166,23 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
                         -> spec.and(versionSpecification)).orElse(versionSpecification)).stream()
                 .map(userSubjectControlTypeMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Pageable pageable) {
+        return userSubjectControlTypeCriteriaService.getByCriteria(EntitySpecifications
+                        .<UserSubjectControlType>getSpecification(criteria)
+                        .orElse(null), pageable)
+                .map(userSubjectControlTypeMapper::toDto);
+    }
+
+    @Override
+    public Page<UserSubjectControlTypeDto> getByCriteria(Map<String, Object> criteria, Long version, Pageable pageable) {
+        var specification = EntitySpecifications.<UserSubjectControlType>getSpecification(criteria);
+        var versionSpecification = VersionUtil.<UserSubjectControlType>getVersionSpecification(version);
+        return userSubjectControlTypeCriteriaService.getByCriteria(specification.map((spec)
+                        -> spec.and(versionSpecification)).orElse(versionSpecification), pageable)
+                .map(userSubjectControlTypeMapper::toDto);
     }
 
     private void checkConstraints(UserSubjectControlTypeDto userSubjectControlType) {

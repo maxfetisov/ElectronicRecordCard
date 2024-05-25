@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,6 +40,12 @@ public class StudentMarkController {
         return ResponseEntity.ok(studentMarkService.getAll());
     }
 
+    @GetMapping("page")
+    public ResponseEntity<Page<StudentMarkDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                       @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(studentMarkService.getAll(PageRequest.of(pageNumber, pageSize)));
+    }
+
     @GetMapping("version/{version}")
     public ResponseEntity<List<StudentMarkDto>> getByVersion(@PathVariable("version") Long version) {
         return ResponseEntity.ok(studentMarkVersionService.getByVersion(version));
@@ -61,6 +69,28 @@ public class StudentMarkController {
             @PathVariable("version") Long version
     ) {
         return ResponseEntity.ok(studentMarkService.getByCriteria(criteria, version));
+    }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<StudentMarkDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(studentMarkService.getByCriteria(criteria, PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<StudentMarkDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(studentMarkService.getByCriteria(
+                criteria,
+                version,
+                PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping

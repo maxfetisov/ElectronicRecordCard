@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,8 +37,15 @@ public class InstituteController {
 
     @GetMapping
     public ResponseEntity<List<InstituteDto>> getAll() {
-        return ResponseEntity.ok(instituteService.findAll());
+        return ResponseEntity.ok(instituteService.getAll());
     }
+
+    @GetMapping("page")
+    public ResponseEntity<Page<InstituteDto>> getAll(@RequestParam("pageNumber") int pageNumber,
+                                                     @RequestParam("pageSize") int pageSize) {
+        return ResponseEntity.ok(instituteService.getAll(PageRequest.of(pageNumber, pageSize)));
+    }
+
 
     @GetMapping("version/{version}")
     public ResponseEntity<List<InstituteDto>> getByVersion(@PathVariable("version") Long version) {
@@ -45,7 +54,7 @@ public class InstituteController {
 
     @GetMapping("{id}")
     public ResponseEntity<InstituteDto> getById(@PathVariable("id") Short id) {
-        return ResponseEntity.ok(instituteService.findById(id));
+        return ResponseEntity.ok(instituteService.getById(id));
     }
 
     @PostMapping("filter")
@@ -61,6 +70,28 @@ public class InstituteController {
             @PathVariable("version") Long version
     ) {
         return ResponseEntity.ok(instituteService.getByCriteria(criteria, version));
+    }
+
+    @PostMapping("filter/page")
+    public ResponseEntity<Page<InstituteDto>> getByCriteria(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria
+    ) {
+        return ResponseEntity.ok(instituteService.getByCriteria(criteria, PageRequest.of(pageNumber, pageSize)));
+    }
+
+    @PostMapping("version/{version}/filter/page")
+    public ResponseEntity<Page<InstituteDto>> getByCriteriaAndVersion(
+            @RequestParam("pageNumber") int pageNumber,
+            @RequestParam("pageSize") int pageSize,
+            @RequestBody Map<String, Object> criteria,
+            @PathVariable("version") Long version
+    ) {
+        return ResponseEntity.ok(instituteService.getByCriteria(
+                criteria,
+                version,
+                PageRequest.of(pageNumber, pageSize)));
     }
 
     @PostMapping
