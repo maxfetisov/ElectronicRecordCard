@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.service.account.impl;
 
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;
+import diploma.electronicrecordcard.data.dto.request.ChangePasswordRequestDto;
 import diploma.electronicrecordcard.data.dto.request.RefreshRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.response.AuthenticationResponseDto;
@@ -12,11 +13,13 @@ import diploma.electronicrecordcard.repository.model.UserRepository;
 import diploma.electronicrecordcard.service.account.AccountService;
 import diploma.electronicrecordcard.service.account.AuthorityService;
 import diploma.electronicrecordcard.service.account.JwtService;
+import diploma.electronicrecordcard.service.mapper.impl.UserMapper;
 import diploma.electronicrecordcard.service.model.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
     RefreshTokenRepository refreshTokenRepository;
 
     AuthorityService authorityService;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
@@ -84,6 +88,17 @@ public class AccountServiceImpl implements AccountService {
         var user = userRepository.findByIdWithRoles(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return authenticate(user);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(ChangePasswordRequestDto changePasswordRequest) {
+        var user = userMapper.toEntity(authorityService.getCurrentUser());
+        if(!passwordEncoder.matches(changePasswordRequest.oldPassword(), user.getPassword())) {
+           throw new BadCredentialsException("Old password does not match");
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+        userRepository.save(user);
     }
 
     @Override

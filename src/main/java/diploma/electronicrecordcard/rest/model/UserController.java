@@ -3,6 +3,7 @@ package diploma.electronicrecordcard.rest.model;
 import diploma.electronicrecordcard.data.dto.model.RoleDto;
 import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.dto.request.AuthenticationRequestDto;
+import diploma.electronicrecordcard.data.dto.request.ChangePasswordRequestDto;
 import diploma.electronicrecordcard.data.dto.request.RefreshRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserCreateRequestDto;
 import diploma.electronicrecordcard.data.dto.request.UserUpdateRequestDto;
@@ -128,6 +129,12 @@ public class UserController {
     @PostMapping("refresh")
     public ResponseEntity<AuthenticationResponseDto> refresh(@RequestBody RefreshRequestDto request) {
         return ResponseEntity.ok(accountService.refresh(request));
+    }
+
+    @PostMapping("change-password")
+    public ResponseEntity<Void> refresh(@RequestBody ChangePasswordRequestDto request) {
+        accountService.changePassword(request);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("logout")
