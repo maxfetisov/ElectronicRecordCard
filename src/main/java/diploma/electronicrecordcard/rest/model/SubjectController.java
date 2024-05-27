@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.rest.model;
 
 import diploma.electronicrecordcard.data.dto.model.SubjectDto;
 import diploma.electronicrecordcard.data.dto.request.SubjectCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.SubjectUpdateRequestDto;
 import diploma.electronicrecordcard.service.model.SubjectService;
 import diploma.electronicrecordcard.service.version.impl.SubjectVersionService;
 import jakarta.validation.Valid;
@@ -98,7 +99,7 @@ public class SubjectController {
     }
 
     @PutMapping
-    public ResponseEntity<SubjectDto> update(@Valid @RequestBody SubjectDto request) {
+    public ResponseEntity<SubjectDto> update(@Valid @RequestBody SubjectUpdateRequestDto request) {
         return ResponseEntity.ok(subjectService.update(request));
     }
 

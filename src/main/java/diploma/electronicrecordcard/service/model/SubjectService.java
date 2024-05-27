@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.SubjectDto;
 import diploma.electronicrecordcard.data.dto.request.SubjectCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.SubjectUpdateRequestDto;
 import diploma.electronicrecordcard.service.criteria.CriteriaAndVersionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface SubjectService extends CriteriaAndVersionService<SubjectDto> {
 
     SubjectDto create(SubjectCreateRequestDto subjectDto);
 
-    SubjectDto update(SubjectDto subjectDto);
+    SubjectDto update(SubjectUpdateRequestDto subjectDto);
 
     SubjectDto delete(Long id, Long version);
 
