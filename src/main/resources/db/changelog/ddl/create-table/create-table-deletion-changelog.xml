@@ -9,7 +9,7 @@
             <column name="id" type="bigserial">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="entity_type" type="varchar(30)">
+            <column name="entity_type" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="entity_id" type="bigint">

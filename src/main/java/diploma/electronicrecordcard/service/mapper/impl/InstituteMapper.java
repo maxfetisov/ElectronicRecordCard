@@ -14,6 +14,7 @@ public class InstituteMapper implements Mapper<InstituteDto, Institute> {
                 .id(institute.getId())
                 .name(institute.getName())
                 .fullName(institute.getFullName())
+                .deleted(institute.getDeleted())
                 .version(institute.getVersion())
                 .build();
     }
@@ -24,6 +25,7 @@ public class InstituteMapper implements Mapper<InstituteDto, Institute> {
                 .id(instituteDto.id())
                 .name(instituteDto.name())
                 .fullName(instituteDto.fullName())
+                .deleted(instituteDto.deleted())
                 .version(instituteDto.getVersion())
                 .build();
     }

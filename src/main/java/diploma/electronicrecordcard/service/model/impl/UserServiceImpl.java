@@ -134,14 +134,19 @@ public class UserServiceImpl implements UserService {
                 .email(nonNull(userDto.email()) ? userDto.email() : user.getEmail())
                 .recordBookNumber(nonNull(userDto.recordBookNumber())
                         ? userDto.recordBookNumber() : user.getRecordBookNumber())
-                .groupId(nonNull(userDto.groupId()) ? userDto.groupId() : user.getGroup().getId())
-                .instituteId(nonNull(userDto.instituteId()) ? userDto.instituteId() : user.getInstitute().getId())
+                .groupId(nonNull(userDto.groupId()) ? userDto.groupId()
+                        : (nonNull(user.getGroup()) ? user.getGroup().getId() : null))
+                .instituteId(nonNull(userDto.instituteId()) ? userDto.instituteId()
+                        : (nonNull(user.getInstitute()) ? user.getInstitute().getId() : null))
                 .roles(nonNull(userDto.roles()) ? userDto.roles() : user.getRoles().stream().map(Role::getId).toList())
                 .deleted(user.getDeleted())
                 .version(userRepository.getNextVersion())
                 .build();
         checkConstraints(updatedUser);
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(updatedUser)));
+        var entityUser = userMapper.toEntity(updatedUser);
+        entityUser.setStudentUserSubjectControlTypes(user.getStudentUserSubjectControlTypes());
+        entityUser.setTeacherUserSubjectControlTypes(user.getTeacherUserSubjectControlTypes());
+        return userMapper.toDto(userRepository.save(entityUser));
     }
 
     @Override

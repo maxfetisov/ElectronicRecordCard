@@ -12,6 +12,8 @@ public record UserSubjectControlTypeCreateRequestDto(
         @Positive
         Short hoursNumber,
 
+        String note,
+
         @NotNull
         Long teacherId,
 

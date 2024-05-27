@@ -93,7 +93,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void changePassword(ChangePasswordRequestDto changePasswordRequest) {
-        var user = userMapper.toEntity(authorityService.getCurrentUser());
+        var user = userRepository.findById(authorityService.getCurrentUser().id())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if(!passwordEncoder.matches(changePasswordRequest.oldPassword(), user.getPassword())) {
            throw new BadCredentialsException("Old password does not match");
         }

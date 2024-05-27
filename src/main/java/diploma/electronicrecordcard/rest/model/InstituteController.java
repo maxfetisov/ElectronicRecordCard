@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.rest.model;
 
 import diploma.electronicrecordcard.data.dto.model.InstituteDto;
 import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.InstituteUpdateRequestDto;
 import diploma.electronicrecordcard.service.model.InstituteService;
 import diploma.electronicrecordcard.service.version.impl.InstituteVersionService;
 import jakarta.validation.Valid;
@@ -102,15 +103,15 @@ public class InstituteController {
     }
 
     @PutMapping
-    public ResponseEntity<InstituteDto> update(@Valid @RequestBody InstituteDto request) {
+    public ResponseEntity<InstituteDto> update(@Valid @RequestBody InstituteUpdateRequestDto request) {
         return ResponseEntity.ok(instituteService.update(request));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Short id,
+    public ResponseEntity<InstituteDto> delete(@PathVariable("id") Short id,
                                        @RequestParam(value = "version", defaultValue = "1") Long version) {
-        instituteService.delete(id, version);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(instituteService.delete(id, version));
     }
 
 }

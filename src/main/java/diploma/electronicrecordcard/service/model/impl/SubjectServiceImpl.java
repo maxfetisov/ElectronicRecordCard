@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.service.model.impl;
 
 import diploma.electronicrecordcard.data.dto.model.SubjectDto;
 import diploma.electronicrecordcard.data.dto.request.SubjectCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.SubjectUpdateRequestDto;
 import diploma.electronicrecordcard.data.entity.Subject;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entitynotfound.SubjectNotFoundException;
@@ -72,14 +73,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public SubjectDto update(SubjectDto subjectDto) {
+    public SubjectDto update(SubjectUpdateRequestDto subjectDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.DEAN_OFFICE_EMPLOYEE, RoleName.ADMINISTRATOR));
         Subject subject = subjectRepository.findById(subjectDto.id())
                 .orElseThrow(() -> new SubjectNotFoundException(subjectDto.id().toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(subject, subjectDto, SubjectVersionConflictException.class);
-        Subject newSubject = subjectMapper.toEntity(subjectDto);
-        newSubject.setVersion(subjectRepository.getNextVersion());
-        return subjectMapper.toDto(subjectRepository.save(newSubject));
+        subject.setName(subjectDto.name());
+        subject.setVersion(subjectRepository.getNextVersion());
+        return subjectMapper.toDto(subjectRepository.save(subject));
     }
 
     @Override

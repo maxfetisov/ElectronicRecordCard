@@ -41,6 +41,9 @@ public class UserSubjectControlType implements Versionable {
     @Column(name = "hours_number")
     Short hoursNumber;
 
+    @Column(name = "note")
+    String note;
+
     @Column(name = "version")
     Long version;
 

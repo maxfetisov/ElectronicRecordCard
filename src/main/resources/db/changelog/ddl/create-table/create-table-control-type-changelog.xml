@@ -9,10 +9,10 @@
             <column name="id" type="smallint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(50)">
+            <column name="name" type="varchar(100)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="title" type="varchar(50)">
+            <column name="title" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="bigint">

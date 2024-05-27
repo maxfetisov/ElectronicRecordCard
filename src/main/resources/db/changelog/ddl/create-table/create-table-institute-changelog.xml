@@ -9,10 +9,13 @@
             <column name="id" type="smallserial">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(10)">
+            <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="full_name" type="varchar(50)"/>
+            <column name="full_name" type="varchar(250)"/>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="version" type="bigint">
                 <constraints nullable="false"/>
             </column>

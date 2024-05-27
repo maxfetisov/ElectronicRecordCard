@@ -18,8 +18,6 @@
             </column>
             <column name="user_subject_control_type_id" type="bigint">
                 <constraints
-                        foreignKeyName="fk_student_mark_user_subject_control_type"
-                        references="user_subject_control_type(id)"
                         nullable="false"
                         unique="true"
                 />
@@ -31,5 +29,13 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint
+                baseTableName="student_mark"
+                baseColumnNames="user_subject_control_type_id"
+                constraintName="fk_student_mark_user_subject_control_type"
+                referencedTableName="user_subject_control_type"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>

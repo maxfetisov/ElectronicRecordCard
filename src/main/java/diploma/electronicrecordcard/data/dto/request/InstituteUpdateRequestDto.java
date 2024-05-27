@@ -1,4 +1,4 @@
-package diploma.electronicrecordcard.data.dto.model;
+package diploma.electronicrecordcard.data.dto.request;
 
 import diploma.electronicrecordcard.data.Versionable;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 @Builder
-public record InstituteDto(
+public record InstituteUpdateRequestDto(
 
         @NotNull
         Short id,
@@ -19,8 +19,6 @@ public record InstituteDto(
 
         @Length(max = 50)
         String fullName,
-
-        Boolean deleted,
 
         @NotNull
         @Getter
