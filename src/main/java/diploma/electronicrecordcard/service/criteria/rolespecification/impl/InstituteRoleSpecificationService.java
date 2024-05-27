@@ -4,6 +4,7 @@ import diploma.electronicrecordcard.data.dto.model.UserDto;
 import diploma.electronicrecordcard.data.entity.Institute;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.service.criteria.rolespecification.RoleSpecificationService;
+import diploma.electronicrecordcard.util.EntitySpecifications;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,13 @@ public class InstituteRoleSpecificationService implements RoleSpecificationServi
 
     @Override
     public Specification<Institute> getSpecificationByRole(UserDto user, RoleName roleName) {
-        return null;
+        return switch (roleName) {
+            case STUDENT, TEACHER, DEAN_OFFICE_EMPLOYEE -> EntitySpecifications.getSpecification(
+                    "deleted",
+                    false
+            );
+            default -> null;
+        };
     }
 
 }

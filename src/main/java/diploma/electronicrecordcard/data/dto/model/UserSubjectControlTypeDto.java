@@ -34,6 +34,8 @@ public record UserSubjectControlTypeDto (
         @NotNull
         Short controlTypeId,
 
+        String note,
+
         @NotNull
         @Getter
         Long version

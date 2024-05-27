@@ -39,6 +39,9 @@ public class Institute implements Versionable {
     @Column(name = "full_name")
     String fullName;
 
+    @Column(name = "deleted")
+    Boolean deleted;
+
     @Column(name = "version")
     Long version;
 

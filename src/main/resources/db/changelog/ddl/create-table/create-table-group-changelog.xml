@@ -9,10 +9,10 @@
             <column name="id" type="serial">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(10)">
+            <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="full_name" type="varchar(50)"/>
+            <column name="full_name" type="varchar(250)"/>
             <column name="admission_date" type="date"/>
             <column name="deleted" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>

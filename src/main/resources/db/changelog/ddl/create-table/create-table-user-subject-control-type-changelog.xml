@@ -41,13 +41,14 @@
                 <constraints nullable="false"/>
             </column>
             <column name="hours_number" type="smallint"/>
+            <column name="note" type="text"/>
             <column name="version" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <addUniqueConstraint
                 tableName="user_subject_control_type"
-                columnNames="student_id, teacher_id, subject_id"
+                columnNames="student_id, teacher_id, subject_id, semester"
         />
     </changeSet>
 </databaseChangeLog>

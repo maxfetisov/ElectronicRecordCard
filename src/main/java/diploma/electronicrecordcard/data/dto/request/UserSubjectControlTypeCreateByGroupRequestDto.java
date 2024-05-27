@@ -13,6 +13,8 @@ public record UserSubjectControlTypeCreateByGroupRequestDto(
         @Positive
         Short hoursNumber,
 
+        String note,
+
         @NotNull
         Long teacherId,
 

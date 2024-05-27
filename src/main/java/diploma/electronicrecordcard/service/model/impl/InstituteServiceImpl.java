@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.service.model.impl;
 
 import diploma.electronicrecordcard.data.dto.model.InstituteDto;
 import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.InstituteUpdateRequestDto;
 import diploma.electronicrecordcard.data.entity.Institute;
 import diploma.electronicrecordcard.data.enumeration.RoleName;
 import diploma.electronicrecordcard.exception.entitynotfound.InstituteNotFoundException;
@@ -72,29 +73,31 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public InstituteDto update(InstituteDto instituteDto) {
+    public InstituteDto update(InstituteUpdateRequestDto instituteDto) {
         authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         Institute institute = instituteRepository.findById(instituteDto.id())
                 .orElseThrow(() -> new InstituteNotFoundException(instituteDto.id().toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(institute,
                 instituteDto,
                 InstituteVersionConflictException.class);
-        Institute newInstitute = instituteMapper.toEntity(instituteDto);
-        newInstitute.setVersion(instituteRepository.getNextVersion());
-        return instituteMapper.toDto(instituteRepository.save(newInstitute));
+        institute.setName(instituteDto.name());
+        institute.setFullName(instituteDto.fullName());
+        institute.setVersion(instituteRepository.getNextVersion());
+        return instituteMapper.toDto(instituteRepository.save(institute));
     }
 
     @Override
     @Transactional
-    public void delete(Short id, Long version) {
+    public InstituteDto delete(Short id, Long version) {
         authorityService.checkRolesAndThrow(List.of(RoleName.ADMINISTRATOR));
         Institute institute = instituteRepository.findById(id)
                 .orElseThrow(() -> new InstituteNotFoundException(id.toString()));
         VersionUtil.checkVersionAndThrowVersionConflict(institute,
                 () -> version,
                 InstituteVersionConflictException.class);
-        instituteRepository.deleteById(id);
+        institute.setDeleted(true);
         deletionService.create(INSTITUTE, id.longValue());
+        return instituteMapper.toDto(instituteRepository.save(institute));
     }
 
     @Override

@@ -2,6 +2,7 @@ package diploma.electronicrecordcard.service.model;
 
 import diploma.electronicrecordcard.data.dto.model.InstituteDto;
 import diploma.electronicrecordcard.data.dto.request.InstituteCreateRequestDto;
+import diploma.electronicrecordcard.data.dto.request.InstituteUpdateRequestDto;
 import diploma.electronicrecordcard.service.criteria.CriteriaAndVersionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,8 @@ public interface InstituteService extends CriteriaAndVersionService<InstituteDto
 
     InstituteDto create(InstituteCreateRequestDto instituteDto);
 
-    InstituteDto update(InstituteDto instituteDto);
+    InstituteDto update(InstituteUpdateRequestDto instituteDto);
 
-    void delete(Short id, Long version);
+    InstituteDto delete(Short id, Long version);
 
 }
