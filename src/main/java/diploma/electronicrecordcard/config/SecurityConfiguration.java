@@ -68,6 +68,7 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/api/users/authenticate").permitAll()
+                        .requestMatchers("/api/users/refresh").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling((exceptionHandlingConfigurer) -> {
                    exceptionHandlingConfigurer

@@ -24,7 +24,7 @@ public final class EntitySpecifications {
     }
 
     public static <T> Specification<T> getSpecification(String propertyName, Object value) {
-        return (root, _, criteriaBuilder) -> {
+        return (root, query, criteriaBuilder) -> {
             String[] propertyNameParts = propertyName.split("\\.");
             if(propertyNameParts.length == 0) {
                 return null;

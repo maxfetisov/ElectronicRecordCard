@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
                     .<Institute>getSpecification(Map.of("groups.id", userDto.groupId()))
                     .orElse(null));
             if (!istituteList.isEmpty()) {
-                user.setInstitute(istituteList.getFirst());
+                user.setInstitute(istituteList.stream().findFirst().orElse(null));
             }
         }
         checkConstraints(userMapper.toDto(user));

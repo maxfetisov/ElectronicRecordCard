@@ -35,6 +35,6 @@ public class VersionUtil {
     }
 
     public static <T> Specification<T> getVersionSpecification(Long version) {
-        return ((root, _, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(VERSION), version));
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(VERSION), version));
     }
 }
