@@ -67,6 +67,7 @@ public class InstituteServiceImpl implements InstituteService {
         return instituteMapper.toDto(instituteRepository.save(instituteMapper.toEntity(InstituteDto.builder()
                 .name(instituteDto.name())
                 .fullName(instituteDto.fullName())
+                .deleted(false)
                 .version(instituteRepository.getNextVersion())
                 .build())));
     }
@@ -103,7 +104,7 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     public List<InstituteDto> getByCriteria(Map<String, Object> criteria) {
         return instituteCriteriaService.getByCriteria(EntitySpecifications.<Institute>getSpecification(criteria)
-                .orElse(null)).stream()
+                        .orElse(null)).stream()
                 .map(instituteMapper::toDto)
                 .toList();
     }
