@@ -12,7 +12,7 @@ public record RoleDto(
         Short id,
 
         @NotBlank
-        @Length(max = 20)
+        @Length(max = 50)
         String name
 
 ) {

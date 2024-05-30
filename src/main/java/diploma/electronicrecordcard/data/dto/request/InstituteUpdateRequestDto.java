@@ -14,10 +14,10 @@ public record InstituteUpdateRequestDto(
         Short id,
 
         @NotBlank
-        @Length(max = 10)
+        @Length(max = 50)
         String name,
 
-        @Length(max = 50)
+        @Length(max = 250)
         String fullName,
 
         @NotNull

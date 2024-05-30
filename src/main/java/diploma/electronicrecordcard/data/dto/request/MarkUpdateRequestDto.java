@@ -14,7 +14,7 @@ public record MarkUpdateRequestDto(
         Short id,
 
         @NotBlank
-        @Length(max = 30)
+        @Length(max = 100)
         String title,
 
         @NotNull

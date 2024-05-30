@@ -16,11 +16,11 @@ public record GroupDto(
         Integer id,
 
         @NotBlank
-        @Length(max = 10)
+        @Length(max = 50)
         String name,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 250)
         String fullName,
 
         LocalDate admissionDate,

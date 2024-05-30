@@ -14,7 +14,7 @@ public record SubjectUpdateRequestDto(
         Long id,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 250)
         String name,
 
         @NotNull

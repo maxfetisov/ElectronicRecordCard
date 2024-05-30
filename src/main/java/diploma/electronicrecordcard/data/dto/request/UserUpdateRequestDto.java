@@ -17,18 +17,18 @@ public record UserUpdateRequestDto(
         Long id,
 
         @NotBlank
-        @Length(max = 20)
+        @Length(max = 50)
         String login,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 100)
         String lastName,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 100)
         String firstName,
 
-        @Length(max = 50)
+        @Length(max = 100)
         String middleName,
 
         @Length(max = 20)

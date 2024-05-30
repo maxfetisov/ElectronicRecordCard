@@ -14,11 +14,11 @@ public record ControlTypeDto (
         Short id,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 100)
         String name,
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 100)
         String title,
 
         @NotNull

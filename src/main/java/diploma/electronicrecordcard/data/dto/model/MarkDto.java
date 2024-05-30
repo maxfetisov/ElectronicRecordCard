@@ -14,11 +14,11 @@ public record MarkDto(
         Short id,
 
         @NotBlank
-        @Length(max = 15)
+        @Length(max = 100)
         String name,
 
         @NotBlank
-        @Length(max = 30)
+        @Length(max = 100)
         String title,
 
         @NotNull

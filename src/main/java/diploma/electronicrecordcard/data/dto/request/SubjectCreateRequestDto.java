@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 public record SubjectCreateRequestDto(
 
         @NotBlank
-        @Length(max = 50)
+        @Length(max = 250)
         String name
 
 ) {
