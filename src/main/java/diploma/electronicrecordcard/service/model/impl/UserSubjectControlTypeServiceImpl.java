@@ -82,6 +82,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
                 .controlTypeId(userSubjectControlTypeDto.controlTypeId())
                 .semester(userSubjectControlTypeDto.semester())
                 .hoursNumber(userSubjectControlTypeDto.hoursNumber())
+                .note(userSubjectControlTypeDto.note())
                 .version(userSubjectControlTypeRepository.getNextVersion())
                 .build();
         checkExistenceConstraint(userSubjectControlType);
@@ -102,6 +103,7 @@ public class UserSubjectControlTypeServiceImpl implements UserSubjectControlType
                     .hoursNumber(userSubjectControlTypeDto.hoursNumber())
                     .semester(userSubjectControlTypeDto.semester())
                     .studentId(user.id())
+                    .note(userSubjectControlTypeDto.note())
                     .version(userSubjectControlTypeRepository.getNextVersion())
                     .build();
             checkExistenceConstraint(userSubjectControlType);
