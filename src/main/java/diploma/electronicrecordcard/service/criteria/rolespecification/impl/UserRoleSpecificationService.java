@@ -39,8 +39,8 @@ public class UserRoleSpecificationService implements RoleSpecificationService<Us
                             false
                     ));
             case DEAN_OFFICE_EMPLOYEE -> EntitySpecifications.<User>getSpecification(
-                            "institute.users.id",
-                            user.id()
+                            "institute.id",
+                            user.instituteId()
                     )
                     .or(EntitySpecifications.getSpecification(
                             "id",
